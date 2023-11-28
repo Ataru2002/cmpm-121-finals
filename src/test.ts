@@ -17,7 +17,11 @@ export class GridCell {
     constructor(sunLevel: number, waterLevel: number) {
       this.sunLevel = sunLevel;
       this.waterLevel = waterLevel;
-      this.plant = <Plant>{};
+      this.plant = undefined;
+    }
+
+    toString() {
+      return `Sun = ${this.sunLevel}\nWater = ${this.waterLevel}\nPlant: ${this.plant ? `Type: ${this.plant.type}, Level: ${this.plant.growthLevel}` : "None"}`;
     }
 }
   
@@ -81,13 +85,13 @@ export class Character {
     move(x: number, y: number): void {
       this.position.x += x;
       this.position.y += y;
-      
     }
   
     reap(grid: GridCell[][]): void {
       const currentCell = grid[this.position.y][this.position.x];
       if(currentCell.plant && currentCell.plant.growthLevel == 3){
         this.inventory.push(currentCell.plant);
+        currentCell.plant = undefined;
       }
       
       // Additional logic for collecting resources or updating game state
@@ -97,8 +101,10 @@ export class Character {
   
     sow(grid: GridCell[][], plantType: PlantType): void {
       const currentCell = grid[this.position.y][this.position.x];
-      const newPlant: Plant = { type: plantType, growthLevel: 1 };
-      currentCell.plant = newPlant;
+      if (!currentCell.plant) {
+        const newPlant: Plant = { type: plantType, growthLevel: 1 };
+        currentCell.plant = newPlant;
+      }
       // Additional logic for planting and updating game state
     }
 
@@ -140,20 +146,19 @@ export class Game {
     
     this.grid.cells.forEach((row, y) => {
       row.forEach((_cell, x) => {
-        this.grid.updateCell(x, y, { sunLevel: Math.floor(Math.random() * 3), waterLevel: Math.floor(Math.random() * 3) });
-      });
-    });
+        const existingWater : number = _cell.waterLevel;
+        this.grid.updateCell(x, y, { sunLevel: Math.floor(Math.random() * 3), waterLevel: existingWater + Math.floor(Math.random() * 3) });
+        console.log(`(${x}, ${y}):\n ${_cell}`);
 
-    this.grid.cells.forEach((row, _y) => {
-      row.forEach((cell, _x) => {
-        if(cell.plant){
-            if (PlantGrowthRules.canGrow(cell.plant, cell.sunLevel, cell.waterLevel)) {
-              // Implement plant growth logic
-              cell.plant.growthLevel += 1;
-            }
+        if(_cell.plant){
+          if (PlantGrowthRules.canGrow(_cell.plant, _cell.sunLevel, _cell.waterLevel)) {
+            // Implement plant growth logic
+            _cell.plant.growthLevel += 1;
+          }
         }
       });
     });
+    console.log("--------")
     
     
     const isScenarioCompleted = this.player.checkScenarioCompletion(10);

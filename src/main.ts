@@ -47,24 +47,54 @@ const currentPosition = game.player.getPos();
 document.addEventListener('keydown', (event) => {
   const keyName = event.key;
   if(keyName === 'ArrowUp') {
-    if(game.player.getPos().x === 0){
+    if(game.player.getPos().y === 0){
       return;
     } else {
       // console.log(game.player.getPos().x + 1, game.player.getPos().y);
-      game.player.move(-1, 0);
-      const currentCell = document.querySelector(`#cell-${currentPosition.y}-${currentPosition.x}`);
+      game.player.move(0, -1);
+      const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
+      game.playTurn();
     }
   } 
   else if (keyName === 'ArrowDown'){
+    if (currentPosition.y === 2){
+      return;
+    } else {
+      game.player.move(0, 1);
+      const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
+      currentCell!.appendChild(player);
+      game.playTurn();
+    }
+  }
+  else if (keyName === 'ArrowLeft'){
+    if (currentPosition.x === 0){
+      return;
+    } else {
+      game.player.move(-1, 0);
+      const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
+      currentCell!.appendChild(player);
+      game.playTurn();
+    }
+  }
+  else if (keyName === 'ArrowRight'){
     if (currentPosition.x === 2){
       return;
     } else {
       game.player.move(1, 0);
-      const currentCell = document.querySelector(`#cell-${currentPosition.y}-${currentPosition.x}`);
+      const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
+      game.playTurn();
     }
   }
+  else if(keyName === ' '){
+    if(plants[currentPosition.x][currentPosition.y].level < 3) {
+      plants[currentPosition.x][currentPosition.y].level++;
+      const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+      plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`); 
+    }
+  }
+  
 });
 
 // movement:
@@ -79,7 +109,7 @@ document.addEventListener('keydown', (event) => {
 //       const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
 //       currentCell!.appendChild(player);
 //     }
-    // move up
+//     move up
 //   } else if (keyName === 'ArrowDown') {
 //     if (currentPosition.y === 2) {
 //       return;
@@ -108,12 +138,12 @@ document.addEventListener('keydown', (event) => {
 //     }
     
 //   } else if(keyName === ' ') {
-//     if(plants[currentPosition.x][currentPosition.y].level < 3) {
-//       plants[currentPosition.x][currentPosition.y].level++;
-//       const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
-//       plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`);
+    // if(plants[currentPosition.x][currentPosition.y].level < 3) {
+    //   plants[currentPosition.x][currentPosition.y].level++;
+    //   const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+    //   plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`);
       
-//     }
+    // }
 
 //   } 
 // });
