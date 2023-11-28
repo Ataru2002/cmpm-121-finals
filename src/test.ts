@@ -45,6 +45,10 @@ export class Grid{
         }
         return cells;
     }
+
+    getPlantLvl(x: number, y: number) {
+      return this.cells[y][x].plant?.growthLevel;
+    }
     
     getCell(x: number, y: number): GridCell {
         return this.cells[y][x];
@@ -69,7 +73,7 @@ export class PlantGrowthRules {
     static canGrow(plant: Plant, sunLevel: number, waterLevel: number): boolean {
       // Implement your plant growth rules here
 
-      return plant.growthLevel <= 3 && sunLevel > 0 && waterLevel > 0;
+      return plant.growthLevel < 3 && sunLevel > 0 && waterLevel > 0;
     }
 }
 
@@ -92,11 +96,9 @@ export class Character {
       if(currentCell.plant && currentCell.plant.growthLevel == 3){
         this.inventory.push(currentCell.plant);
         currentCell.plant = undefined;
+        console.log(`Collected resources: ${JSON.stringify(this.inventory)}`);
       }
       
-      // Additional logic for collecting resources or updating game state
-
-      console.log(`Collected resources: ${JSON.stringify(this.inventory)}`);
     }
   
     sow(grid: GridCell[][], plantType: PlantType): void {
@@ -137,9 +139,17 @@ export class Game {
 
   initializeGame(): void {
     //placing initial plants on the grid
-    const initialPlantPosition = this.grid.getRandomCell();
+    // const initialPlantPosition = this.grid.getRandomCell();
     const initialPlant: Plant = { type: PlantType.Type1, growthLevel: 1 };
-    this.grid.updateCell(initialPlantPosition.x, initialPlantPosition.y, {sunLevel: 1, waterLevel: 1, plant: initialPlant});
+    this.grid.cells.forEach((row, y) => {
+      row.forEach((_cell, x) => {
+        const luck = Math.random();
+        if(luck > 0.7){
+          this.grid.updateCell(x, y, {sunLevel: 1, waterLevel: 1, plant: initialPlant});
+        } 
+      });
+    });
+    
   }
   playTurn(): void {
     // this.player.advanceTime(this.grid);

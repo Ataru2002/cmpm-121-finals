@@ -55,6 +55,13 @@ document.addEventListener('keydown', (event) => {
       const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
       game.playTurn();
+      const thisCell = game.grid.getCell(currentPosition.x, currentPosition.y)
+       
+      if(thisCell.plant){
+        const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+        plant!.setAttribute('src', `./assets/level${game.grid.getPlantLvl(currentPosition.x, currentPosition.y)}.png`);
+      }
+      
     }
   } 
   else if (keyName === 'ArrowDown'){
@@ -65,6 +72,11 @@ document.addEventListener('keydown', (event) => {
       const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
       game.playTurn();
+      const thisCell = game.grid.getCell(currentPosition.x, currentPosition.y)
+      if(thisCell.plant){
+        const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+      plant!.setAttribute('src', `./assets/level${game.grid.getPlantLvl(currentPosition.x, currentPosition.y)}.png`);
+      }      
     }
   }
   else if (keyName === 'ArrowLeft'){
@@ -75,6 +87,11 @@ document.addEventListener('keydown', (event) => {
       const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
       game.playTurn();
+      const thisCell = game.grid.getCell(currentPosition.x, currentPosition.y)
+      if(thisCell.plant){
+        const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+      plant!.setAttribute('src', `./assets/level${game.grid.getPlantLvl(currentPosition.x, currentPosition.y)}.png`);
+      }
     }
   }
   else if (keyName === 'ArrowRight'){
@@ -85,17 +102,27 @@ document.addEventListener('keydown', (event) => {
       const currentCell = document.querySelector(`#cell-${currentPosition.x}-${currentPosition.y}`);
       currentCell!.appendChild(player);
       game.playTurn();
+      const thisCell = game.grid.getCell(currentPosition.x, currentPosition.y)
+      
+      if(thisCell.plant){
+        const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+        plant!.setAttribute('src', `./assets/level${game.grid.getPlantLvl(currentPosition.x, currentPosition.y)}.png`);
+      }
     }
   }
   else if(keyName === ' '){
     if(plants[currentPosition.x][currentPosition.y].level < 3) {
-      plants[currentPosition.x][currentPosition.y].level++;
+      game.player.reap(game.grid.cells);
       const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
-      plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`); 
+      plant!.setAttribute('src', `./assets/level${1}.png`);
+      // plants[currentPosition.x][currentPosition.y].level++;
+      // const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
+      // plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`); 
     }
   }
   
 });
+
 
 // movement:
 // const currentPosition = { x: 1, y: 1 };
