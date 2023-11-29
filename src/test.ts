@@ -1,7 +1,6 @@
 export enum PlantType {
   Type1,
   Type2,
-  Type3,
 }
 export enum PlantLevel {
   Type1,
@@ -19,14 +18,11 @@ export class GridCell {
   waterLevel: number;
   plant: Plant | undefined;
 
-  constructor(sunLevel: number, waterLevel: number, PlantType?: PlantType) {
+  constructor(sunLevel: number, waterLevel: number) {
     this.sunLevel = sunLevel;
     this.waterLevel = waterLevel;
-    if (PlantType) {
-      this.plant = { type: PlantType, growthLevel: 1 };
-    } else {
-      this.plant = { type: 1, growthLevel: 1 };
-    }
+    const newPlant: Plant = { type: Math.round(Math.random()), growthLevel: 1 };
+    this.plant = newPlant;
   }
 
   setPlant(plant: Plant) {
@@ -51,10 +47,21 @@ export class GridCell {
 
   updatePlant(): void {
     if (this.plant) {
-      if (this.sunLevel === 1 && this.waterLevel > 0 && this.plant.growthLevel < 3) {
-        this.plant.growthLevel += 1;
-        this.waterLevel -= 1;
-        this.sunLevel -= 1;
+      switch (this.plant.type) {
+        case PlantType.Type1:
+          if (this.sunLevel === 1 && this.waterLevel > 0 && this.plant.growthLevel < 3) {
+            this.plant.growthLevel += 1;
+            this.waterLevel -= 1;
+            this.sunLevel -= 1;
+          }
+          break;
+        case PlantType.Type2:
+          if (this.sunLevel === 1 && this.waterLevel > 1 && this.plant.growthLevel < 3) {
+            this.plant.growthLevel += 1;
+            this.waterLevel -= 2;
+            this.sunLevel -= 1;
+          }
+          break;
       }
 
     }
@@ -120,7 +127,7 @@ export class Grid {
     }
     if (cellData.plant) {
       const plant = document.createElement('img');
-      plant.src = `./assets/level${cellData.plant.growthLevel}.png`;
+      plant.src = `./assets/level${cellData.plant.growthLevel + cellData.plant.type*3}.png`;
       plant.style.width = '25px';
       plant.style.height = '25px';
       plant.id = `plant-${x}-${y}`;
@@ -161,12 +168,13 @@ export class Character {
     const div = document.querySelector(`#cell-${this.position.x}-${this.position.y}`);
     div!.appendChild(player!);
 
-    if(this.inventory.length > 0){
+    if (this.inventory.length > 0) {
       const inventory = document.querySelector('#inventory');
       inventory!.innerHTML = '';
       for (let i = 0; i < this.inventory.length; i++) {
         const plant = document.createElement('img');
-        plant.src = `./assets/level${this.inventory[i].growthLevel}.png`;
+        //TODO: this needs to be changed so it can have values besides 0,1
+        plant.src = `./assets/level${3 + 3*this.inventory[i].type }.png`;
         plant.style.width = '25px';
         plant.style.height = '25px';
         inventory!.appendChild(plant);
@@ -180,7 +188,8 @@ export class Character {
       this.inventory.push(currentCell.plant);
       currentCell.plant = undefined;
     } else if (!currentCell.plant) {
-      const newPlant: Plant = { type: 1, growthLevel: 1 };
+      //TODO: this needs to be changed so it can have values besides 0,1
+      const newPlant: Plant = { type: Math.round(Math.random()), growthLevel: 1 };
       currentCell.plant = newPlant;
 
     }
@@ -191,11 +200,7 @@ export class Character {
     return this.position;
   }
 
-  checkScenarioCompletion(targetPlantCount: number): boolean {
-    // Additional logic for checking if the scenario is completed
-    // const plantsWithTargetGrowth = grid.flat().flatMap((cell) => cell.plant).filter((plant) => plant!.growthLevel >= targetGrowthLevel);
-    return this.inventory.length >= targetPlantCount;
-  }
+
 }
 
 export class Game {
@@ -235,11 +240,11 @@ export class Game {
     }
     this.player.renderPlayer();
     this.renderUI();
-    if(this.player.inventory.length >= this.goal){
+    if (this.player.inventory.length >= this.goal) {
       alert('You win!');
     }
   }
-  renderUI(): void { 
+  renderUI(): void {
     const goal = document.querySelector('#goal');
     goal!.innerHTML = `${this.player.inventory.length}/${this.goal} plants collected`;
     const inGameTime = document.querySelector("#time");
