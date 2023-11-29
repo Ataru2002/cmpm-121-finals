@@ -16,22 +16,18 @@ document.addEventListener("keydown", (event) => {
       return;
     } else {
       game.player.move(0, -1);
-      game.playTurn();
-      
     }
   } else if (keyName === "ArrowDown") {
     if (currentPosition.y === 2) {
       return;
     } else {
       game.player.move(0, 1);
-      game.playTurn();
     }
   } else if (keyName === "ArrowLeft") {
     if (currentPosition.x === 0) {
       return;
     } else {
       game.player.move(-1, 0);
-      game.playTurn();
     }
   } else if (keyName === "ArrowRight") {
     if (currentPosition.x === 2) {

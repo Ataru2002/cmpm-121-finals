@@ -204,14 +204,15 @@ export class Game {
   rows: number;
   cols: number;
   goal: number;
+  time: Date;
 
 
   constructor(gridRows: number, gridCols: number, goal: number) {
     this.goal = goal;
     this.rows = gridRows;
     this.cols = gridCols;
+    this.time = new Date(2023, 0, 1, 0, 0, 0);
     const initalPos: Position = { x: Math.floor(Math.random() * this.rows), y: Math.floor(Math.random() * this.cols) };
-
     this.grid = new Grid(this.rows, this.cols);
     this.player = new Character(initalPos, []);
     this.playTurn();
@@ -237,9 +238,9 @@ export class Game {
   }
   renderUI(): void { 
     const goal = document.querySelector('#goal');
-    goal!.innerHTML = `${this.player.inventory.length}/${this.goal} plants collected}`;
+    goal!.innerHTML = `${this.player.inventory.length}/${this.goal} plants collected`;
     const inGameTime = document.querySelector("#time");
-    const inGameDate = new Date(2023, 0, 1, 0, 0, 0);
+    const inGameDate = this.time;
     inGameTime!.innerHTML = inGameDate.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
@@ -248,6 +249,7 @@ export class Game {
       minute: "numeric",
       hour12: true,
     });
+    this.time.setDate(this.time.getDate() + 1);
   }
 
 
