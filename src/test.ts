@@ -179,4 +179,5 @@ export class Game {
   
 }
 
-  
+
+// OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
