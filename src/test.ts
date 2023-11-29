@@ -189,6 +189,7 @@ export class Game {
     const isScenarioCompleted = this.player.checkScenarioCompletion(10);
     if (isScenarioCompleted) {
       console.log("Scenario completed! Game over.");
+      alert("LEVEL COMPLETE");
     }
   }
 }
