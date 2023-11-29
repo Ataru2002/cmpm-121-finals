@@ -113,21 +113,21 @@ export class Grid {
     const cellData = this.getCell(x, y);
     for (let i = 0; i < cellData.sunLevel; i++) {
       const sun = document.createElement('img')
-      sun.src = './src/assets/sun.png';
+      sun.src = 'assets/sun.png';
       sun.style.width = '25px';
       sun.style.height = '25px';
       cellElement!.appendChild(sun);
     }
     for (let i = 0; i < cellData.waterLevel; i++) {
       const water = document.createElement('img')
-      water.src = './src/assets/water.png';
+      water.src = 'assets/water.png';
       water.style.width = '25px';
       water.style.height = '25px';
       cellElement!.appendChild(water);
     }
     if (cellData.plant) {
       const plant = document.createElement('img');
-      plant.src = `./src/assets/level${cellData.plant.growthLevel + cellData.plant.type*3}.png`;
+      plant.src = `assets/level${cellData.plant.growthLevel + cellData.plant.type*3}.png`;
       plant.style.width = '25px';
       plant.style.height = '25px';
       plant.id = `plant-${x}-${y}`;
@@ -161,7 +161,7 @@ export class Character {
   }
   renderPlayer(): void {
     const player = document.createElement('img');
-    player.src = './src/assets/player.png';
+    player.src = 'assets/player.png';
     player.id = 'player';
     player.style.width = '25px';
     player.style.height = '25px';
@@ -174,7 +174,7 @@ export class Character {
       for (let i = 0; i < this.inventory.length; i++) {
         const plant = document.createElement('img');
         //TODO: this needs to be changed so it can have values besides 0,1
-        plant.src = `./src/assets/level${3 + 3*this.inventory[i].type }.png`;
+        plant.src = `assets/level${3 + 3*this.inventory[i].type }.png`;
         plant.style.width = '25px';
         plant.style.height = '25px';
         inventory!.appendChild(plant);
