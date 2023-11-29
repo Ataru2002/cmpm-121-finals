@@ -158,9 +158,9 @@ document.addEventListener("keydown", (event) => {
       // plants[currentPosition.x][currentPosition.y].level++;
       // const plant = document.querySelector(`#plant-${currentPosition.x}-${currentPosition.y}`);
       // plant!.setAttribute('src', `./assets/level${plants[currentPosition.x][currentPosition.y].level}.png`);
+      goalText.innerText = `${game.player.getCollectedPlants()}/10 plants collected`;
     }
   }
-  goalText.innerText = `${game.player.getCollectedPlants()}/10 plants collected`;
 });
 
 // movement:
