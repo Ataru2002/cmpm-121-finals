@@ -116,6 +116,10 @@ export class Character {
     return this.position;
   }
 
+  getCollectedPlants() {
+    return this.inventory.length;
+  }
+
   // advanceTime(grid: Grid): void {
   // Additional logic for updating sun and water levels, plant growth
 
