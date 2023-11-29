@@ -46,8 +46,29 @@ const goalText = document.createElement("div");
 goalText.innerText = `${game.player.getCollectedPlants()}/10 plants collected`;
 gameDiv?.appendChild(goalText);
 
+const inGameTime = document.createElement("div");
+let inGameDate = new Date(2023, 0, 1, 0, 0, 0);
+inGameTime.innerText = inGameDate.toLocaleString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+});
+gameDiv?.appendChild(inGameTime);
+
 const currentPosition = game.player.getPos();
 document.addEventListener("keydown", (event) => {
+  inGameDate.setMinutes(inGameDate.getMinutes() + 1);
+  inGameTime.innerText = inGameDate.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
   const keyName = event.key;
   if (keyName === "ArrowUp") {
     if (game.player.getPos().y === 0) {
