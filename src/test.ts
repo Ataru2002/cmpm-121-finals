@@ -235,6 +235,9 @@ export class Game {
     }
     this.player.renderPlayer();
     this.renderUI();
+    if(this.player.inventory.length >= this.goal){
+      alert('You win!');
+    }
   }
   renderUI(): void { 
     const goal = document.querySelector('#goal');
