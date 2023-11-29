@@ -49,5 +49,10 @@ h1 {
 #gameContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  
+}
+.cell {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
 }
