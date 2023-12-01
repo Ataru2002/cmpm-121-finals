@@ -2,42 +2,38 @@ import * as foo from "./test.ts";
 
 
 
-const game = new foo.Game(3, 3, 10);
+const game = foo.InitGame();
 
-
-
-
-
-const currentPosition = game.player.getPos();
+const currentPosition = game.playerPosition;
 document.addEventListener("keydown", (event) => {
   const keyName = event.key;
   if (keyName === "ArrowUp") {
-    if (game.player.getPos().y === 0) {
+    if (currentPosition.y === 0) {
       return;
     } else {
-      game.player.move(0, -1);
+      game.movePlayer(0, -1);
     }
   } else if (keyName === "ArrowDown") {
     if (currentPosition.y === 2) {
       return;
     } else {
-      game.player.move(0, 1);
+      game.movePlayer(0, 1);
     }
   } else if (keyName === "ArrowLeft") {
     if (currentPosition.x === 0) {
       return;
     } else {
-      game.player.move(-1, 0);
+      game.movePlayer(-1, 0);
     }
   } else if (keyName === "ArrowRight") {
     if (currentPosition.x === 2) {
       return;
     } else {
-      game.player.move(1, 0);
+      game.movePlayer(1, 0);
     }
   }
   else if(keyName === ' '){
-    game.player.action(game); 
+    game.playerAction(); 
   } else {
     return
   }
