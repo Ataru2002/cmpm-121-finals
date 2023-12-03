@@ -37,20 +37,20 @@ document.addEventListener("keydown", (event) => {
   } else if (keyName === "t") {
     game.restoreGameState();
   } else if (keyName === "1") {
-    localStorage.setItem("save1", game.toMomento());
+    localStorage.setItem("save1", game.toMomento("save slot 1"));
   } else if (keyName === "!" && event.shiftKey) {
     const getSave = localStorage.getItem("save1");
-    if (getSave) game.fromMomento(getSave);
+    if (getSave) game.fromMomento(getSave, "save slot 1");
   } else if (keyName === "2") {
-    localStorage.setItem("save2", game.toMomento());
+    localStorage.setItem("save2", game.toMomento("save slot 2"));
   } else if (keyName === "@" && event.shiftKey) {
     const getSave = localStorage.getItem("save2");
-    if (getSave) game.fromMomento(getSave);
+    if (getSave) game.fromMomento(getSave, "save slot 2");
   } else if (keyName === "3") {
-    localStorage.setItem("save3", game.toMomento());
+    localStorage.setItem("save3", game.toMomento("save slot 3"));
   } else if (keyName === "#" && event.shiftKey) {
     const getSave = localStorage.getItem("save3");
-    if (getSave) game.fromMomento(getSave);
+    if (getSave) game.fromMomento(getSave, "save slot 3");
   } else {
     return;
   }

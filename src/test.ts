@@ -401,7 +401,7 @@ export class Game {
   }
 
   //momento pattern
-  toMomento(): string {
+  toMomento(slot: string): string {
     //save all these items to maintain a proper gamestates
     const gardenS = JSON.stringify(this.garden);
     const playerPosS = JSON.stringify(this.playerPos);
@@ -409,10 +409,11 @@ export class Game {
     const logsS = JSON.stringify(this.logs);
     const redosS = JSON.stringify(this.redos);
     const inventoryS = JSON.stringify(this.inventory);
+    alert("saved to " + slot);
     return `${gardenS}+${playerPosS}+${timeS}+${logsS}+${redosS}+${inventoryS}`;
   }
 
-  fromMomento(momento: string) {
+  fromMomento(momento: string, slot: string) {
     //split the string
     const cur = momento.split("+");
     //reload all the items
@@ -463,12 +464,12 @@ export class Game {
       redos.push(temp);
     });
 
-
     this.garden = garden;
     this.playerPos = playerPos;
     this.time = time;
     this.logs = logs;
     this.redos = redos;
     this.inventory = inventory;
+    alert("loaded from " + slot);
   }
 }
