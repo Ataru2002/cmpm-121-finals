@@ -3,7 +3,7 @@ import * as foo from "./test.ts";
 
 
 const game = foo.InitGame();
-
+let save = "";
 
 document.addEventListener("keydown", (event) => {
   const currentPosition = game.playerPosition;
@@ -39,7 +39,13 @@ document.addEventListener("keydown", (event) => {
     game.revertGameState();
   } else if(keyName === "t") {
     game.restoreGameState();
-  } else {
+  } else if(keyName === "s"){
+    localStorage.setItem("save", game.toMomento());
+  } else if(keyName === "l") {
+    const getSave = localStorage.getItem("save");
+    if(getSave) game.fromMomento(getSave);
+  }
+  else {
     return;
   }
   if(!specialCommand) game.playTurn();

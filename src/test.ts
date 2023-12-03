@@ -176,7 +176,6 @@ export class Game {
 
   movePlayer(x: number, y: number): void {
     //logs the gamestate
-    console.log(this.garden);
     this.logs.push(
       this.copyGameState({
         garden: this.garden,
@@ -185,7 +184,6 @@ export class Game {
         inventory: this.inventory,
       })
     );
-    console.log(this.logs);
     this.playerPos.x += x;
     this.playerPos.y += y;
 
@@ -251,7 +249,6 @@ export class Game {
 
   playerAction(): void {
     //logs the gamestate
-    console.log(this.garden);
     this.logs.push(
       this.copyGameState({
         garden: this.garden,
@@ -287,6 +284,7 @@ export class Game {
 
   //reverse 1 step of the game
   revertGameState(): void {
+    console.log(this.logs);
     if (this.logs.length) {
       const last = this.logs.pop();
       const current = this.copyGameState({
@@ -299,7 +297,7 @@ export class Game {
       this.playerPos = last!.playerPos;
       this.time = last!.time;
       this.inventory = last!.inventory;
-      if(last){
+      if (last) {
         this.redos.push(current);
       }
     }
@@ -307,7 +305,6 @@ export class Game {
 
   //restore 1 step of the game that was undo
   restoreGameState(): void {
-    console.log(this.redos);
     if (this.redos.length) {
       const last = this.redos.pop();
       const current = this.copyGameState({
@@ -381,7 +378,7 @@ export class Game {
         plant.style.height = "25px";
         inventory!.appendChild(plant);
       }
-    }else{
+    } else {
       //clear the inventory when it's empty
       const inventory = document.querySelector("#inventory");
       inventory!.innerHTML = "";
@@ -401,5 +398,77 @@ export class Game {
       minute: "numeric",
       hour12: true,
     });
+  }
+
+  //momento pattern
+  toMomento(): string {
+    const gardenS = JSON.stringify(this.garden);
+    const playerPosS = JSON.stringify(this.playerPos);
+    const timeS = JSON.stringify(this.time);
+    const logsS = JSON.stringify(this.logs);
+    const redosS = JSON.stringify(this.redos);
+    const inventoryS = JSON.stringify(this.inventory);
+    return `${gardenS}+${playerPosS}+${timeS}+${logsS}+${redosS}+${inventoryS}`;
+  }
+
+  fromMomento(momento: string) {
+    const cur = momento.split("+");
+    const buffer = new ArrayBuffer(
+      JSON.parse(cur[0]).rows * JSON.parse(cur[0]).cols * 4
+    );
+    const garden = new Garden(
+      buffer,
+      JSON.parse(cur[0]).rows,
+      JSON.parse(cur[0]).cols
+    );
+    garden.u8 = JSON.parse(cur[0]).u8;
+    const playerPos = JSON.parse(cur[1]);
+    const time = new Date(JSON.parse(cur[2]));
+    const logs: gameState[] = [];
+    const redos: gameState[] = [];
+    const inventory: { plant: number; level: number }[] = JSON.parse(cur[5]);
+
+    JSON.parse(cur[3]).forEach((instance: any) => {
+      const tempGarden = new Garden(
+        instance.garden.buffer,
+        instance.garden.rows,
+        instance.garden.cols
+      );
+      tempGarden.u8 = instance.garden.u8;
+      const temp: gameState = {
+        garden: tempGarden,
+        playerPos: instance.playerPos,
+        time: new Date(instance.time),
+        inventory: instance.inventory,
+      };
+      logs.push(temp);
+    });
+
+    JSON.parse(cur[4]).forEach((instance: any) => {
+      const tempGarden = new Garden(
+        instance.garden.buffer,
+        instance.garden.rows,
+        instance.garden.cols
+      );
+      tempGarden.u8 = instance.garden.u8;
+      const temp: gameState = {
+        garden: tempGarden,
+        playerPos: instance.playerPos,
+        time: new Date(instance.time),
+        inventory: instance.inventory,
+      };
+      redos.push(temp);
+    });
+
+
+    this.garden = garden;
+    this.playerPos = playerPos;
+    this.time = time;
+    this.logs = logs;
+    this.redos = redos;
+    this.inventory = inventory;
+    console.log(this.garden);
+    console.log(this.logs);
+    console.log(this.redos);
   }
 }
