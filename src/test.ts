@@ -95,6 +95,7 @@ export function InitGame(): Game {
 
       div.style.border = "1px solid black";
       gameDiv!.appendChild(div);
+      game.updateGameState({ x, y });
     }
   }
   game.playTurn();
