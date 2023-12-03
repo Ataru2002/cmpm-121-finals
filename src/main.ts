@@ -4,8 +4,10 @@ import * as foo from "./test.ts";
 
 const game = foo.InitGame();
 
-const currentPosition = game.playerPosition;
+
 document.addEventListener("keydown", (event) => {
+  const currentPosition = game.playerPosition;
+  let specialCommand = false;
   const keyName = event.key;
   if (keyName === "ArrowUp") {
     if (currentPosition.y === 0) {
@@ -31,14 +33,16 @@ document.addEventListener("keydown", (event) => {
     } else {
       game.movePlayer(1, 0);
     }
-  }
-  else if(keyName === ' '){
+  } else if(keyName === ' '){
     game.playerAction(); 
+  } else if (keyName === "r") {
+    game.revertGameState();
+  } else if(keyName === "t") {
+    game.restoreGameState();
   } else {
-    return
+    return;
   }
-  game.playTurn();
-  
+  if(!specialCommand) game.playTurn();
 });
 
 
