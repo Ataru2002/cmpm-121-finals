@@ -402,6 +402,7 @@ export class Game {
 
   //momento pattern
   toMomento(): string {
+    //save all these items to maintain a proper gamestates
     const gardenS = JSON.stringify(this.garden);
     const playerPosS = JSON.stringify(this.playerPos);
     const timeS = JSON.stringify(this.time);
@@ -412,7 +413,9 @@ export class Game {
   }
 
   fromMomento(momento: string) {
+    //split the string
     const cur = momento.split("+");
+    //reload all the items
     const buffer = new ArrayBuffer(
       JSON.parse(cur[0]).rows * JSON.parse(cur[0]).cols * 4
     );
@@ -467,8 +470,5 @@ export class Game {
     this.logs = logs;
     this.redos = redos;
     this.inventory = inventory;
-    console.log(this.garden);
-    console.log(this.logs);
-    console.log(this.redos);
   }
 }

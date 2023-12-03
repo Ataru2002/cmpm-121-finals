@@ -3,7 +3,6 @@ import * as foo from "./test.ts";
 
 
 const game = foo.InitGame();
-let save = "";
 
 document.addEventListener("keydown", (event) => {
   const currentPosition = game.playerPosition;
