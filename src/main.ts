@@ -1,9 +1,11 @@
 import * as foo from "./test.ts";
 
 const game = foo.InitGame();
+//const getAuto = localStorage.getItem("autosave");
+//if (getAuto) game.fromMomento(getAuto, "autosave");
 
 document.addEventListener("keydown", (event) => {
-  localStorage.setItem("autosave", game.toMomento());
+  
 
   const currentPosition = game.playerPosition;
   let specialCommand = false;
@@ -56,5 +58,8 @@ document.addEventListener("keydown", (event) => {
   } else {
     return;
   }
+
+  //autosave after the moved was made
+  localStorage.setItem("autosave", game.toMomento());
   if (!specialCommand) game.playTurn();
 });
