@@ -3,6 +3,8 @@ import * as foo from "./test.ts";
 const game = foo.InitGame();
 
 document.addEventListener("keydown", (event) => {
+  localStorage.setItem("autosave", game.toMomento());
+
   const currentPosition = game.playerPosition;
   let specialCommand = false;
   const keyName = event.key;

@@ -76,6 +76,7 @@ interface gameState {
 }
 
 export function InitGame(): Game {
+  const autosave = localStorage.getItem("autosave");
   const rows = 3;
   const cols = 3;
   const goal = 10;
@@ -96,6 +97,13 @@ export function InitGame(): Game {
       div.style.border = "1px solid black";
       gameDiv!.appendChild(div);
       game.updateGameState({ x, y });
+    }
+  }
+  if (autosave) {
+    const loadAuto = window.confirm("load from autosave?");
+    if (loadAuto) {
+      console.log("loading from auto");
+      game.fromMomento(autosave);
     }
   }
   game.playTurn();
@@ -401,7 +409,7 @@ export class Game {
   }
 
   //momento pattern
-  toMomento(slot: string): string {
+  toMomento(slot: string = ""): string {
     //save all these items to maintain a proper gamestates
     const gardenS = JSON.stringify(this.garden);
     const playerPosS = JSON.stringify(this.playerPos);
@@ -409,11 +417,13 @@ export class Game {
     const logsS = JSON.stringify(this.logs);
     const redosS = JSON.stringify(this.redos);
     const inventoryS = JSON.stringify(this.inventory);
-    alert("saved to " + slot);
+    if (slot !== "") {
+      alert("saved to " + slot);
+    }
     return `${gardenS}+${playerPosS}+${timeS}+${logsS}+${redosS}+${inventoryS}`;
   }
 
-  fromMomento(momento: string, slot: string) {
+  fromMomento(momento: string, slot: string = "") {
     //split the string
     const cur = momento.split("+");
     //reload all the items
@@ -470,6 +480,8 @@ export class Game {
     this.logs = logs;
     this.redos = redos;
     this.inventory = inventory;
-    alert("loaded from " + slot);
+    if (slot !== "") {
+      alert("loaded from " + slot);
+    }
   }
 }
