@@ -99,14 +99,6 @@ export function InitGame(): Game {
       game.updateGameState({ x, y });
     }
   }
-  // set text for controls / rules
-  const controlsDiv = document.querySelector("#controls");
-  controlsDiv!.innerHTML = `Controls:<br />
-    <b>Up/Down/Left/Right</b>: Move Player<br />
-    <b>Space</b>: Reap / Sow on Current Tile<br />
-    <b>R/T</b>: Undo / Redo<br />
-    <b>1/2/3</b>: Save Game Into Slot 1/2/3<br />
-    <b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />`;
 
   if (autosave) {
     const loadAuto = window.confirm("load from autosave?");
