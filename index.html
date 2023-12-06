@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,11 +9,19 @@
   <body>
     <div id="app">
       <h1 id="goal"></h1>
-      <h2 id="time"></h1>
-      <!-- <img id="player" src="assets/player.png" alt="player" style="width: 25px; height: 25px;" /> -->
-      <div>Inventory: <div id="inventory"></div></div>
-      <div id="gameContainer">
-
+      <h2 id="time"></h2>
+      <div>
+        Inventory:
+        <div id="inventory"></div>
+      </div>
+      <div id="gameContainer"></div>
+      <div id="controls">
+        Controls:<br />
+        <b>Up/Down/Left/Right</b>: Move Player<br />
+        <b>Space</b>: Reap / Sow on Current Tile<br />
+        <b>R/T</b>: Undo / Redo<br />
+        <b>1/2/3</b>: Save Game Into Slot 1/2/3<br />
+        <b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

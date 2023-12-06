@@ -23,7 +23,31 @@
 # Devlog Entry - 11/29/23
 
 ## How we satisfied the software requirements
+
 For our game, we have a controllable player on a 3x3 grid where any action-- moving, reaping, sowing-- will advance time by 1 day. Each cell has its own amount of sun energy and water level each day. At the beginning of the game, all grid cells are populated randomly by one of two plant types: **Flowers** and **Tomato Trees**. Both of these plant types have three levels of growth and require at least 1 sun energy, but **Flowers** need at least 1 level of water while **Tomato Trees** need at least 2 levels of water. Once plants reach growth level 3, players can reap them by pressing Space while on the same cell. For a cell without a plant, players can sow a random plant by pressing Space. For the win condition of the game we decided on a simple condition of collecting ten plants to show a win message. This may get changed in the future but we have this as a placeholder for now.
 
 ## Reflection
-For our initial implementation, we decided to not use Phaser 3. It has a lot of functionality, but with our current implementation, it was much more lightweight to work without it. We are going forward with using just JavaScript (TypeScript) for now. Interfaces and type aliases have been helpful for us, and our familiarity with TypeScript made it much easier for the team to understand and read each other's code. 
+
+For our initial implementation, we decided to not use Phaser 3. It has a lot of functionality, but with our current implementation, it was much more lightweight to work without it. We are going forward with using just JavaScript (TypeScript) for now. Interfaces and type aliases have been helpful for us, and our familiarity with TypeScript made it much easier for the team to understand and read each other's code.
+
+# Devlog Entry - 12/5/23
+
+## How we satisfied the software requirements
+
+- F0.a - F0.g: Same as last week
+
+- F1.a: We used an Array of Structures to format our cell data. Each cell is represented as a 4-byte array, with each byte representing a different piece of information for that cell. Memory is statically allocated for the entire grid (based on the number of cells).
+  - The first byte contains the Plant type.
+  - The second byte contains the Growth Level.
+  - The third byte contains the Water Level.
+  - The fourth byte contains the Sun Level.
+
+![F1.a data structure diagram](./f1a-diagram.png)
+
+- F1.b: We have arrays `logs` and `redos` that both hold `gameStates`, which contain the important information of each day of the game. The player is able to undo (R) and redo (T) every action multiple times, even from a saved game.
+- F1.c: Players can save their data on three different slots by pressing **1**, **2**, and **3**. They can then load their save file by pressing **Shift + 1/2/3** for the respective slot.
+- F1.d: After each move that the player makes, the game is auto-saved into an auto-save entry. In the case of an unexpected quit, the player is prompted if they want to "load from autosave" when they re-enter the game.
+
+## Reflection
+
+After switching to just TypeScript (with no Phaser library), not much has changed for our team plan. For now, we are continuing to build upon our code from last week and adding the new software requirements from F1. We will need to pick up the pace for these next assignments, which will reduce our scope in terms of gameplay mechanics.

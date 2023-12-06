@@ -99,6 +99,7 @@ export function InitGame(): Game {
       game.updateGameState({ x, y });
     }
   }
+
   if (autosave) {
     const loadAuto = window.confirm("load from autosave?");
     if (loadAuto) {
