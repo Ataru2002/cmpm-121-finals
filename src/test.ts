@@ -1,3 +1,7 @@
+import rules from "./rules.json";
+import levels from "./levels.json";
+const plantData = JSON.parse(JSON.stringify(rules));
+const levelData = JSON.parse(JSON.stringify(levels));
 export enum PlantType {
   None,
   Type1,
@@ -77,16 +81,17 @@ interface gameState {
 
 export function InitGame(): Game {
   const autosave = localStorage.getItem("autosave");
-  const rows = 3;
-  const cols = 3;
-  const goal = 10;
+  const rows = levelData[0].rows; 
+  const cols = levelData[0].cols;
   const buffer = new ArrayBuffer(rows * cols * 4);
   const garden = new Garden(buffer, rows, cols);
-  const game = new Game(rows, cols, goal, garden);
+  const game = new Game(rows, cols, levelData[0].goal, garden, levelData[0].start);
+  const gameDiv = document.querySelector("#gameContainer") as HTMLDivElement;
+
+  gameDiv.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const gameDiv = document.querySelector("#gameContainer");
       const div = document.createElement("div");
       div.classList.add("cell");
       div.id = `cell-${x}-${y}`;
@@ -118,21 +123,23 @@ export class Game {
   inventory: { plant: number; level: number }[];
   rows: number;
   cols: number;
-  goal: number;
+  goal: number[];
   time: Date;
   logs: gameState[];
   redos: gameState[];
 
+
   constructor(
     gridRows: number,
     gridCols: number,
-    goal: number,
-    garden: Garden
+    goal: number[],
+    garden: Garden,
+    start: [number, number, number]
   ) {
     this.goal = goal;
     this.rows = gridRows;
     this.cols = gridCols;
-    this.time = new Date(2023, 0, 1, 0, 0, 0);
+    this.time = new Date( ... start);
     const initalPos: Position = {
       x: Math.floor(Math.random() * this.rows),
       y: Math.floor(Math.random() * this.cols),
@@ -216,40 +223,29 @@ export class Game {
     }
     this.renderPlayer();
     this.renderUI();
-    if (this.inventory.length >= this.goal) {
-      alert("You win!");
+    let goalReached = true;
+    for(let i = 0; i < this.goal.length; i++) {
+      const plantct = this.inventory.filter((item) => item.plant === i + 1).length;
+      if(plantct < this.goal[i]) {
+        goalReached = false;
+      }
+    }
+    if(goalReached) {
+      popUpMessage("You win!");
     }
   }
 
   updateGameState(cell: Position): void {
     const cellData = this.garden.getCell(cell);
-    switch (cellData.plant) {
-      case PlantType.None:
-        break;
-      case PlantType.Type1:
-        if (
-          cellData.sun === 1 &&
-          cellData.water > 0 &&
-          cellData.level != PlantLevel.Type3
-        ) {
-          cellData.level += 1;
-          cellData.water -= 1;
-          cellData.sun -= 1;
-        }
-        break;
-      case PlantType.Type2:
-        if (
-          cellData.sun === 1 &&
-          cellData.water > 1 &&
-          cellData.level != PlantLevel.Type3
-        ) {
-          cellData.level += 1;
-          cellData.water -= 2;
-          cellData.sun -= 1;
-        }
-        break;
-    }
 
+    if (cellData.plant) {
+      const rules = plantData[cellData.plant - 1];
+      if (cellData.water >= rules.water && cellData.sun >= rules.sun && cellData.level < rules.level - 1) {
+        cellData.level += 1;
+        cellData.water -= rules.water;
+        cellData.sun -= rules.sun;
+      }
+    }
     if (Math.random() < 0.25 && cellData.water < 3) {
       cellData.water += 1;
     }
@@ -293,7 +289,6 @@ export class Game {
 
   //reverse 1 step of the game
   revertGameState(): void {
-    console.log(this.logs);
     if (this.logs.length) {
       const last = this.logs.pop();
       const current = this.copyGameState({
@@ -336,24 +331,39 @@ export class Game {
     const cellElement = document.querySelector(`#cell-${cell.x}-${cell.y}`);
     cellElement!.innerHTML = "";
     const cellData = this.garden.getCell(cell);
-    //console.log(cellData)
-    for (let i = 0; i < cellData.sun; i++) {
-      const sun = document.createElement("img");
-      sun.src = "assets/sun.png";
-      sun.style.width = "25px";
-      sun.style.height = "25px";
-      cellElement!.appendChild(sun);
-    }
-    for (let i = 0; i < cellData.water; i++) {
-      const water = document.createElement("img");
-      water.src = "assets/water.png";
-      water.style.width = "25px";
-      water.style.height = "25px";
-      cellElement!.appendChild(water);
-    }
+    const sunDiv = document.createElement("div"); 
+    sunDiv.style.display = "flex";
+    sunDiv.style.flexDirection = "row";
+    sunDiv.style.justifyContent = "center";
+    sunDiv.style.alignItems = "center";
+    const sun = document.createElement("img");
+    sun.src = "assets/sun.png";
+    sun.style.width = "25px";
+    sun.style.height = "25px";
+    sunDiv!.appendChild(sun);
+    const sunText = document.createElement("p");
+    sunText.style.color = "black";
+    sunText.style.margin = "0px";
+    sunText.innerHTML = "x" + cellData.sun.toString();
+    sunDiv!.appendChild(sunText);
+    cellElement!.appendChild(sunDiv);
+    const waterDiv = document.createElement("div")
+    waterDiv.style.display = "flex";
+    waterDiv.style.flexDirection = "row";
+    waterDiv.style.justifyContent = "center";
+    waterDiv.style.alignItems = "center";
+    const water = document.createElement("img");
+    water.src = "assets/water.png";
+    water.style.width = "25px";
+    water.style.height = "25px";
+    waterDiv!.appendChild(water);
+    const waterText = document.createElement("p");
+    waterText.style.color = "black";
+    waterText.style.margin = "0px";
+    waterText.innerHTML = "x" + cellData.water.toString();
+    waterDiv!.appendChild(waterText);
+    cellElement!.appendChild(waterDiv);
     if (cellData.plant) {
-      //console.log(cellData.level)
-      //console.log(cellData.plant)
       const plant = document.createElement("img");
       plant.src = `assets/type${cellData.plant}_level${cellData.level + 1}.png`;
       plant.style.width = "25px";
@@ -363,26 +373,34 @@ export class Game {
   }
 
   renderPlayer(): void {
+    const div = document.querySelector(
+      `#cell-${this.playerPos.x}-${this.playerPos.y}`
+    );
+    const playerDiv = document.createElement("div");
+    playerDiv.style.display = "flex";
+    playerDiv.style.flexDirection = "row";
+    playerDiv.style.justifyContent = "right";
+    playerDiv.style.alignItems = "flex-end";
+    playerDiv.style.width = "100px";
+    const numChildren = div?.childElementCount;
+    playerDiv.style.height = 100 - (numChildren! * 25) + "px";
+
     const player = document.createElement("img");
     player.src = "assets/player.png";
     player.id = "player";
     player.style.width = "25px";
     player.style.height = "25px";
-    //console.log(`#cell-${this.playerPos.x}-${this.playerPos.y}`);
-    const div = document.querySelector(
-      `#cell-${this.playerPos.x}-${this.playerPos.y}`
-    );
-    div!.appendChild(player!);
+    
+    playerDiv!.appendChild(player);
+    div!.appendChild(playerDiv!);
 
     if (this.inventory.length > 0) {
       const inventory = document.querySelector("#inventory");
       inventory!.innerHTML = "";
+      this.inventory.sort((a, b) => a.plant - b.plant);
       for (let i = 0; i < this.inventory.length; i++) {
         const plant = document.createElement("img");
-        //TODO: this needs to be changed so it can have values besides 0,1
-        plant.src = `assets/type${this.inventory[i].plant}_level${
-          this.inventory[i].level + 1
-        }.png`;
+        plant.src = plantData[this.inventory[i].plant - 1].img;
         plant.style.width = "25px";
         plant.style.height = "25px";
         inventory!.appendChild(plant);
@@ -395,17 +413,24 @@ export class Game {
   }
 
   renderUI(): void {
-    const goal = document.querySelector("#goal");
-    goal!.innerHTML = `${this.inventory.length}/${this.goal} plants collected`;
+    const goal = document.querySelector("#goal") as HTMLDivElement;
+    goal.innerHTML = "";
+    const types = this.goal.length;
+    for(let i = 0; i < types; i++) {
+      const plantct = this.inventory.filter((item) => item.plant === i + 1).length;
+      const plant = document.createElement("img");
+      plant.src = plantData[i].img;
+      plant.style.width = "25px";
+      plant.style.height = "25px";
+      goal.appendChild(plant);
+      goal.innerHTML += `(${plantct}/${this.goal[i]})`;
+    }
     const inGameTime = document.querySelector("#time");
     const inGameDate = this.time;
     inGameTime!.innerHTML = inGameDate.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
+      day: "numeric"
     });
   }
 
@@ -419,7 +444,7 @@ export class Game {
     const redosS = JSON.stringify(this.redos);
     const inventoryS = JSON.stringify(this.inventory);
     if (slot !== "") {
-      alert("saved to " + slot);
+      popUpMessage("saved to " + slot);
     }
     return `${gardenS}+${playerPosS}+${timeS}+${logsS}+${redosS}+${inventoryS}`;
   }
@@ -482,7 +507,18 @@ export class Game {
     this.redos = redos;
     this.inventory = inventory;
     if (slot !== "") {
-      alert("loaded from " + slot);
+      popUpMessage("loaded from " + slot);
     }
   }
+}
+function popUpMessage(message: string) {
+  const popUp = document.createElement("div");
+  popUp.classList.add("popUp");
+  popUp.innerHTML = message + "!";
+  const gameDiv = document.querySelector("#app");
+  gameDiv!.insertBefore(popUp, gameDiv!.firstChild);  
+  setTimeout(() => {
+    popUp.remove();
+  }, 2000);
+
 }

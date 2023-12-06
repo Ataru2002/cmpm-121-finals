@@ -1,8 +1,6 @@
 import * as foo from "./test.ts";
 
 const game = foo.InitGame();
-//const getAuto = localStorage.getItem("autosave");
-//if (getAuto) game.fromMomento(getAuto, "autosave");
 
 document.addEventListener("keydown", (event) => {
   
@@ -17,7 +15,7 @@ document.addEventListener("keydown", (event) => {
       game.movePlayer(0, -1);
     }
   } else if (keyName === "ArrowDown") {
-    if (currentPosition.y === 2) {
+    if (currentPosition.y === game.cols-1) {
       return;
     } else {
       game.movePlayer(0, 1);
@@ -29,7 +27,7 @@ document.addEventListener("keydown", (event) => {
       game.movePlayer(-1, 0);
     }
   } else if (keyName === "ArrowRight") {
-    if (currentPosition.x === 2) {
+    if (currentPosition.x === game.rows-1) {
       return;
     } else {
       game.movePlayer(1, 0);

@@ -1,0 +1,14 @@
+[
+    {
+        "water": 1,
+        "sun": 1,
+        "level": 3,
+        "img": "assets/type1_level3.png"
+    },
+    {
+        "water": 2,
+        "sun": 1,
+        "level": 3,
+        "img": "assets/type2_level3.png"
+    }
+]
