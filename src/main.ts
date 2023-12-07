@@ -1,6 +1,14 @@
 import * as foo from "./test.ts";
 
-const game = foo.InitGame();
+
+//local storage
+let currentLevel = localStorage.getItem("currentlevel");
+if (currentLevel == null){
+  localStorage.setItem("currentlevel", "0");
+} 
+
+currentLevel = localStorage.getItem("currentlevel");
+const game = foo.InitGame(Number(currentLevel));
 
 document.addEventListener("keydown", (event) => {
   
