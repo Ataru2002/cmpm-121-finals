@@ -51,3 +51,67 @@ For our initial implementation, we decided to not use Phaser 3. It has a lot of 
 ## Reflection
 
 After switching to just TypeScript (with no Phaser library), not much has changed for our team plan. For now, we are continuing to build upon our code from last week and adding the new software requirements from F1. We will need to pick up the pace for these next assignments, which will reduce our scope in terms of gameplay mechanics.
+
+# Devlog Entry - 12/7/23
+
+## How we satisfied the software requirements
+
+### F0+F1
+
+- No major changes were made.
+
+### External DSL for Scenario Design
+
+For our external DSL, we decided to use the pre-existing DSL called JSON. We chose this language because it is something we're familiar to and also used it has been used in a previous class called CMPM 120.
+~~~ 
+[
+  {
+    "rows": 3,
+    "cols": 3,
+    "goal": [5, 5],
+    "start": [2023, 0, 1]
+  },
+]
+~~~
+- In the file called levels.json, it is used for changing row, column, goal, and date values. This file is intended for changing the game's level once the player has reached the goal. We have a row and column definition because we want to change the grid size to open more possibilities for the player. Next, we have a goal for checking when the player wins and the date to let the player know how much time has passed.
+
+### Internal DSL for Scenario Design
+
+~~~
+function InternalPlantTypeCompiler (program: ($: PlantDefinitionLanguage) => void): 
+InternalPlantType{
+  const internalPlantType = new InternalPlantType();
+  const dsl: PlantDefinitionLanguage = {
+    type(type: PlantType): void {
+      internalPlantType.type = type
+    },
+    assets(assets: string[]): void {
+      internalPlantType.assets = assets;
+    },
+    sun(sun: number): void {
+      internalPlantType.sun = sun;
+    }
+  };
+  program(dsl);
+  return internalPlantType;
+}
+~~~
+~~~
+const allPlantDefinitions = [
+      function flower($: PlantDefinitionLanguage) {
+        $.type(PlantType.Type1);
+        $.assets([
+          "assets/type1_level1.png",
+          "assets/type1_level2.png",
+          "assets/type1_level3.png",
+        ]);
+        $.sun(1);
+~~~
+~~~
+this.plants = allPlantDefinitions.map(InternalPlantTypeCompiler);
+~~~
+
+- This was written in TypeScript. In the code snippets above, we basically implemented a subclass sandbox pattern. In a more natural language explanation, each variant or type of an object is represented by a separate subclass. The key idea is to encapsulate the behavior of each type within its own class, creating a sandbox-like environment for managing the variations. We had PlantDefinitionLanguage interface to let different plant types share the same function names but how they are implemented is different based on their types. 
+
+## Reflection
+Our plan and tool has not changed after F1. Also, we started thinking more about polishing our game to be more enjoyable for the player. Our game was on point with the requirements but did not account to the essence of the game being fun for the player. We updated the visual representation of water and the tiles to be understood easier. In the previous versions, we found the increasing images of water as water level increases is extremely annoying so we came up with the idea to just have an image and a number represent the levels instead. In total, a bunch of quality of life and aesthetic changes. However, we did update a little bit of code to match our code now that our game has multiple levels due to interal DSL. Saving mechanic was having issues so we had to clear the game save everytime we move on to the next level. Autosave will feature will only work on the level you're currently on.
