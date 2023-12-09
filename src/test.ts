@@ -1,9 +1,7 @@
-import rules from "./rules.json";
 import levels from "./levels.json";
 import english from "./en.json";
 import chinese from "./cn.json";
 import arabic from "./ar.json";
-const plantData = JSON.parse(JSON.stringify(rules));
 const levelData = JSON.parse(JSON.stringify(levels));
 const englishData = JSON.parse(JSON.stringify(english)) as LanguageData;
 const chineseData = JSON.parse(JSON.stringify(chinese)) as LanguageData;
@@ -43,6 +41,47 @@ interface LanguageData {
 interface Position {
   x: number;
   y: number;
+}
+
+interface PlantDefinitionLanguage {
+  type(type: PlantType): void;
+  assets(assets: string[]): void;
+  sun(sun: number): void;
+  water(water: number): void;
+  level(level: PlantLevel): void;
+}
+
+class InternalPlantType {
+  type: PlantType = PlantType.None;
+  assets: string[] = [];
+  sun: number = -1;
+  water: number = -1;
+  level: number = -1;
+}
+
+function InternalPlantTypeCompiler(
+  program: ($: PlantDefinitionLanguage) => void
+): InternalPlantType {
+  const internalPlantType = new InternalPlantType();
+  const dsl: PlantDefinitionLanguage = {
+    type(type: PlantType): void {
+      internalPlantType.type = type;
+    },
+    assets(assets: string[]): void {
+      internalPlantType.assets = assets;
+    },
+    sun(sun: number): void {
+      internalPlantType.sun = sun;
+    },
+    water(water: number): void {
+      internalPlantType.water = water;
+    },
+    level(level: number): void {
+      internalPlantType.level = level;
+    },
+  };
+  program(dsl);
+  return internalPlantType;
 }
 
 class Garden {
@@ -99,18 +138,19 @@ interface gameState {
   inventory: { plant: number; level: number }[];
 }
 
-export function InitGame(): Game {
+export function InitGame(level: number): Game {
+  //set autosave level in addition to autosave
   const autosave = localStorage.getItem("autosave");
-  const rows = levelData[0].rows;
-  const cols = levelData[0].cols;
+  const rows = levelData[level].rows;
+  const cols = levelData[level].cols;
   const buffer = new ArrayBuffer(rows * cols * 4);
   const garden = new Garden(buffer, rows, cols);
   const game = new Game(
     rows,
     cols,
-    levelData[0].goal,
+    levelData[level].goal,
     garden,
-    levelData[0].start
+    levelData[level].start
   );
   const gameDiv = document.querySelector("#gameContainer") as HTMLDivElement;
 
@@ -174,6 +214,7 @@ export class Game {
   logs: gameState[];
   redos: gameState[];
   language: any;
+  plants: InternalPlantType[];
 
   constructor(
     gridRows: number,
@@ -196,6 +237,35 @@ export class Game {
     this.logs = [];
     this.redos = [];
     this.language = englishData;
+
+    //define the types of plants
+    const allPlantDefinitions = [
+      function flower($: PlantDefinitionLanguage) {
+        $.type(PlantType.Type1);
+        $.assets([
+          "assets/type1_level1.png",
+          "assets/type1_level2.png",
+          "assets/type1_level3.png",
+        ]);
+        $.sun(1);
+        $.water(1);
+        $.level(PlantLevel.Type3);
+      },
+      function tomato($: PlantDefinitionLanguage) {
+        $.type(PlantType.Type2);
+        $.assets([
+          "assets/type2_level1.png",
+          "assets/type2_level2.png",
+          "assets/type2_level3.png",
+        ]);
+        $.sun(1);
+        $.water(2);
+        $.level(PlantLevel.Type3);
+      },
+    ];
+
+    this.plants = allPlantDefinitions.map(InternalPlantTypeCompiler);
+    console.log(this.plants);
   }
 
   get playerPosition(): Position {
@@ -281,6 +351,26 @@ export class Game {
     }
     if (goalReached) {
       popUpMessage("You win!");
+      const current = Number(localStorage.getItem("currentlevel"));
+      const moveOn = window.confirm("Do you want to go to the next level?");
+      if (!moveOn) {
+        //player don't want to go to the next level
+        localStorage.clear();
+        localStorage.setItem("currentlevel", current.toString());
+        location.reload();
+      } else if (moveOn && current < levelData.length - 1) {
+        //player move on to the next level
+        const newLevel = current + 1;
+        localStorage.clear();
+        localStorage.setItem("currentlevel", newLevel.toString());
+        location.reload();
+      } else if (moveOn) {
+        //player finished the last level
+        alert("You finished the last level and beat the game");
+        localStorage.clear();
+        localStorage.setItem("currentlevel", "0");
+        location.reload();
+      }
     }
   }
 
@@ -288,11 +378,11 @@ export class Game {
     const cellData = this.garden.getCell(cell);
 
     if (cellData.plant) {
-      const rules = plantData[cellData.plant - 1];
+      const rules = this.plants[cellData.plant - 1];
       if (
         cellData.water >= rules.water &&
         cellData.sun >= rules.sun &&
-        cellData.level < rules.level - 1
+        cellData.level <= rules.level - 1
       ) {
         cellData.level += 1;
         cellData.water -= rules.water;
@@ -453,7 +543,7 @@ export class Game {
       this.inventory.sort((a, b) => a.plant - b.plant);
       for (let i = 0; i < this.inventory.length; i++) {
         const plant = document.createElement("img");
-        plant.src = plantData[this.inventory[i].plant - 1].img;
+        plant.src = this.plants[this.inventory[i].plant - 1].assets[2];
         plant.style.width = "25px";
         plant.style.height = "25px";
         inventory!.appendChild(plant);
@@ -478,7 +568,7 @@ export class Game {
         (item) => item.plant === i + 1
       ).length;
       const plant = document.createElement("img");
-      plant.src = plantData[i].img;
+      plant.src = this.plants[i].assets[2];
       plant.style.width = "25px";
       plant.style.height = "25px";
       goal.appendChild(plant);
