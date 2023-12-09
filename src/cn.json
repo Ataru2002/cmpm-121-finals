@@ -5,6 +5,7 @@
     "slot1" : "插槽1",
     "slot2" : "插槽2",
     "slot3" : "插槽3",
-    "inventory" : "存货"
+    "inventory" : "存货",
+    "dateCode" : "zh-Hans-CN"
 
 }

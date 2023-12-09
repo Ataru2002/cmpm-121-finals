@@ -469,7 +469,7 @@ export class Game {
     }
     const inGameTime = document.querySelector("#time");
     const inGameDate = this.time;
-    inGameTime!.innerHTML = inGameDate.toLocaleString("en-US", {
+    inGameTime!.innerHTML = inGameDate.toLocaleString(this.language.dateCode, {
       year: "numeric",
       month: "long",
       day: "numeric",
