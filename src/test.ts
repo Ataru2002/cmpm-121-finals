@@ -36,6 +36,8 @@ interface LanguageData {
   dateCode: string;
   autoSave: string;
   controls: string;
+  nextLevel: string;
+  end: string;
 }
 
 interface Position {
@@ -236,7 +238,13 @@ export class Game {
     this.playerPos = initalPos;
     this.logs = [];
     this.redos = [];
-    this.language = englishData;
+    const savedLang = localStorage.getItem("language")!;
+    if (savedLang) {
+      const autoLanguage = JSON.parse(savedLang) as LanguageData;
+      this.language = autoLanguage;
+    } else {
+      this.language = englishData;
+    }
 
     //define the types of plants
     const allPlantDefinitions = [
@@ -352,23 +360,26 @@ export class Game {
     if (goalReached) {
       popUpMessage("You win!");
       const current = Number(localStorage.getItem("currentlevel"));
-      const moveOn = window.confirm("Do you want to go to the next level?");
+      const moveOn = window.confirm(this.language.nextLevel);
       if (!moveOn) {
         //player don't want to go to the next level
         localStorage.clear();
         localStorage.setItem("currentlevel", current.toString());
+        localStorage.setItem("language", JSON.stringify(this.language));
         location.reload();
       } else if (moveOn && current < levelData.length - 1) {
         //player move on to the next level
         const newLevel = current + 1;
         localStorage.clear();
         localStorage.setItem("currentlevel", newLevel.toString());
+        localStorage.setItem("language", JSON.stringify(this.language));
         location.reload();
       } else if (moveOn) {
         //player finished the last level
-        alert("You finished the last level and beat the game");
+        alert(this.language.end);
         localStorage.clear();
         localStorage.setItem("currentlevel", "0");
+        localStorage.setItem("language", JSON.stringify(this.language));
         location.reload();
       }
     }
