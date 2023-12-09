@@ -1,7 +1,14 @@
 import rules from "./rules.json";
 import levels from "./levels.json";
+import english from "./en.json";
+import chinese from "./cn.json";
+import arabic from "./ar.json";
 const plantData = JSON.parse(JSON.stringify(rules));
 const levelData = JSON.parse(JSON.stringify(levels));
+const englishData = JSON.parse(JSON.stringify(english));
+const chineseData = JSON.parse(JSON.stringify(chinese));
+const arabicData = JSON.parse(JSON.stringify(arabic));
+
 export enum PlantType {
   None,
   Type1,
@@ -81,11 +88,17 @@ interface gameState {
 
 export function InitGame(): Game {
   const autosave = localStorage.getItem("autosave");
-  const rows = levelData[0].rows; 
+  const rows = levelData[0].rows;
   const cols = levelData[0].cols;
   const buffer = new ArrayBuffer(rows * cols * 4);
   const garden = new Garden(buffer, rows, cols);
-  const game = new Game(rows, cols, levelData[0].goal, garden, levelData[0].start);
+  const game = new Game(
+    rows,
+    cols,
+    levelData[0].goal,
+    garden,
+    levelData[0].start
+  );
   const gameDiv = document.querySelector("#gameContainer") as HTMLDivElement;
 
   gameDiv.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
@@ -112,6 +125,22 @@ export function InitGame(): Game {
       game.fromMomento(autosave);
     }
   }
+  const enButton = document.getElementById("en");
+  enButton?.addEventListener("click", () => {
+    game.language = englishData;
+    game.renderUI();
+  });
+  const cnButton = document.getElementById("cn");
+  cnButton?.addEventListener("click", () => {
+    game.language = chineseData;
+    game.renderUI();
+  });
+
+  const arButton = document.getElementById("ar");
+  arButton?.addEventListener("click", () => {
+    game.language = arabicData;
+    game.renderUI();
+  });
   game.playTurn();
 
   return game;
@@ -127,7 +156,7 @@ export class Game {
   time: Date;
   logs: gameState[];
   redos: gameState[];
-
+  language: any;
 
   constructor(
     gridRows: number,
@@ -139,7 +168,7 @@ export class Game {
     this.goal = goal;
     this.rows = gridRows;
     this.cols = gridCols;
-    this.time = new Date( ... start);
+    this.time = new Date(...start);
     const initalPos: Position = {
       x: Math.floor(Math.random() * this.rows),
       y: Math.floor(Math.random() * this.cols),
@@ -149,6 +178,7 @@ export class Game {
     this.playerPos = initalPos;
     this.logs = [];
     this.redos = [];
+    this.language = englishData;
   }
 
   get playerPosition(): Position {
@@ -224,13 +254,15 @@ export class Game {
     this.renderPlayer();
     this.renderUI();
     let goalReached = true;
-    for(let i = 0; i < this.goal.length; i++) {
-      const plantct = this.inventory.filter((item) => item.plant === i + 1).length;
-      if(plantct < this.goal[i]) {
+    for (let i = 0; i < this.goal.length; i++) {
+      const plantct = this.inventory.filter(
+        (item) => item.plant === i + 1
+      ).length;
+      if (plantct < this.goal[i]) {
         goalReached = false;
       }
     }
-    if(goalReached) {
+    if (goalReached) {
       popUpMessage("You win!");
     }
   }
@@ -240,7 +272,11 @@ export class Game {
 
     if (cellData.plant) {
       const rules = plantData[cellData.plant - 1];
-      if (cellData.water >= rules.water && cellData.sun >= rules.sun && cellData.level < rules.level - 1) {
+      if (
+        cellData.water >= rules.water &&
+        cellData.sun >= rules.sun &&
+        cellData.level < rules.level - 1
+      ) {
         cellData.level += 1;
         cellData.water -= rules.water;
         cellData.sun -= rules.sun;
@@ -331,7 +367,7 @@ export class Game {
     const cellElement = document.querySelector(`#cell-${cell.x}-${cell.y}`);
     cellElement!.innerHTML = "";
     const cellData = this.garden.getCell(cell);
-    const sunDiv = document.createElement("div"); 
+    const sunDiv = document.createElement("div");
     sunDiv.style.display = "flex";
     sunDiv.style.flexDirection = "row";
     sunDiv.style.justifyContent = "center";
@@ -347,7 +383,7 @@ export class Game {
     sunText.innerHTML = "x" + cellData.sun.toString();
     sunDiv!.appendChild(sunText);
     cellElement!.appendChild(sunDiv);
-    const waterDiv = document.createElement("div")
+    const waterDiv = document.createElement("div");
     waterDiv.style.display = "flex";
     waterDiv.style.flexDirection = "row";
     waterDiv.style.justifyContent = "center";
@@ -383,14 +419,14 @@ export class Game {
     playerDiv.style.alignItems = "flex-end";
     playerDiv.style.width = "100px";
     const numChildren = div?.childElementCount;
-    playerDiv.style.height = 100 - (numChildren! * 25) + "px";
+    playerDiv.style.height = 100 - numChildren! * 25 + "px";
 
     const player = document.createElement("img");
     player.src = "assets/player.png";
     player.id = "player";
     player.style.width = "25px";
     player.style.height = "25px";
-    
+
     playerDiv!.appendChild(player);
     div!.appendChild(playerDiv!);
 
@@ -414,10 +450,16 @@ export class Game {
 
   renderUI(): void {
     const goal = document.querySelector("#goal") as HTMLDivElement;
+    const inventoryText = document.getElementById(
+      "inventory"
+    ) as HTMLDivElement;
     goal.innerHTML = "";
+    inventoryText.innerText = this.language.inventory;
     const types = this.goal.length;
-    for(let i = 0; i < types; i++) {
-      const plantct = this.inventory.filter((item) => item.plant === i + 1).length;
+    for (let i = 0; i < types; i++) {
+      const plantct = this.inventory.filter(
+        (item) => item.plant === i + 1
+      ).length;
       const plant = document.createElement("img");
       plant.src = plantData[i].img;
       plant.style.width = "25px";
@@ -430,12 +472,13 @@ export class Game {
     inGameTime!.innerHTML = inGameDate.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
-      day: "numeric"
+      day: "numeric",
     });
   }
 
   //momento pattern
   toMomento(slot: string = ""): string {
+    console.log(this.language.save3);
     //save all these items to maintain a proper gamestates
     const gardenS = JSON.stringify(this.garden);
     const playerPosS = JSON.stringify(this.playerPos);
@@ -444,7 +487,7 @@ export class Game {
     const redosS = JSON.stringify(this.redos);
     const inventoryS = JSON.stringify(this.inventory);
     if (slot !== "") {
-      popUpMessage("saved to " + slot);
+      popUpMessage(this.language.save + slot);
     }
     return `${gardenS}+${playerPosS}+${timeS}+${logsS}+${redosS}+${inventoryS}`;
   }
@@ -507,7 +550,7 @@ export class Game {
     this.redos = redos;
     this.inventory = inventory;
     if (slot !== "") {
-      popUpMessage("loaded from " + slot);
+      popUpMessage(this.language.load + slot);
     }
   }
 }
@@ -516,9 +559,8 @@ function popUpMessage(message: string) {
   popUp.classList.add("popUp");
   popUp.innerHTML = message + "!";
   const gameDiv = document.querySelector("#app");
-  gameDiv!.insertBefore(popUp, gameDiv!.firstChild);  
+  gameDiv!.insertBefore(popUp, gameDiv!.firstChild);
   setTimeout(() => {
     popUp.remove();
   }, 2000);
-
 }

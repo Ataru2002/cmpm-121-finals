@@ -1,0 +1,10 @@
+{
+    "load": "loaded from ",
+    "win" :  "You win!",
+    "save" : "saved to ",
+    "slot1" : "slot 1",
+    "slot2" : "slot 2",
+    "slot3" : "slot 3",
+    "inventory" : "Inventory:"
+
+}
