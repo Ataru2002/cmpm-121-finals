@@ -6,6 +6,7 @@
     "slot2" : "slot 2",
     "slot3" : "slot 3",
     "inventory" : "Inventory:",
-    "dateCode" : "en-US"
+    "dateCode" : "en-US",
+    "autoSave" : "Load from autosave?"
 
 }

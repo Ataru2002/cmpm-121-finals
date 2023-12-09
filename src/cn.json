@@ -6,6 +6,7 @@
     "slot2" : "插槽2",
     "slot3" : "插槽3",
     "inventory" : "存货",
-    "dateCode" : "zh-Hans-CN"
+    "dateCode" : "zh-Hans-CN",
+    "autoSave" : "从自动保存加载？"
 
 }

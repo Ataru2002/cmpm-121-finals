@@ -57,5 +57,6 @@ document.addEventListener("keydown", (event) => {
 
   //autosave after the moved was made
   localStorage.setItem("autosave", game.toMomento());
+  localStorage.setItem("language", JSON.stringify(game.language));
   if (!specialCommand) game.playTurn();
 });

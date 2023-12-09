@@ -5,9 +5,9 @@ import chinese from "./cn.json";
 import arabic from "./ar.json";
 const plantData = JSON.parse(JSON.stringify(rules));
 const levelData = JSON.parse(JSON.stringify(levels));
-const englishData = JSON.parse(JSON.stringify(english));
-const chineseData = JSON.parse(JSON.stringify(chinese));
-const arabicData = JSON.parse(JSON.stringify(arabic));
+const englishData = JSON.parse(JSON.stringify(english)) as LanguageData;
+const chineseData = JSON.parse(JSON.stringify(chinese)) as LanguageData;
+const arabicData = JSON.parse(JSON.stringify(arabic)) as LanguageData;
 
 export enum PlantType {
   None,
@@ -25,6 +25,18 @@ interface Cell {
   plant: PlantType;
   sun: number;
   level: PlantLevel;
+}
+
+interface LanguageData {
+  load: string;
+  win: string;
+  save: string;
+  slot1: string;
+  slot2: string;
+  slot3: string;
+  inventory: string;
+  dateCode: string;
+  autoSave: string;
 }
 
 interface Position {
@@ -119,7 +131,11 @@ export function InitGame(): Game {
   }
 
   if (autosave) {
-    const loadAuto = window.confirm("load from autosave?");
+    const savedLang = localStorage.getItem("language")!;
+    const autoLanguage = JSON.parse(savedLang) as LanguageData;
+
+    console.log(autoLanguage.save);
+    const loadAuto = window.confirm(autoLanguage.autoSave);
     if (loadAuto) {
       console.log("loading from auto");
       game.fromMomento(autosave);
@@ -478,7 +494,6 @@ export class Game {
 
   //momento pattern
   toMomento(slot: string = ""): string {
-    console.log(this.language.save3);
     //save all these items to maintain a proper gamestates
     const gardenS = JSON.stringify(this.garden);
     const playerPosS = JSON.stringify(this.playerPos);

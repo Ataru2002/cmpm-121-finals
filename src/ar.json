@@ -6,6 +6,7 @@
     "slot2" : "فتحة 2",
     "slot3" : "فتحة 3",
     "inventory" : "جرد",
-    "dateCode" : "ar-EG"
+    "dateCode" : "ar-EG",
+    "autoSave" : "التحميل من الحفظ التلقائي؟"
 
 }
