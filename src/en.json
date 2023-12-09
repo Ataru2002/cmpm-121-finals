@@ -7,6 +7,6 @@
     "slot3" : "slot 3",
     "inventory" : "Inventory:",
     "dateCode" : "en-US",
-    "autoSave" : "Load from autosave?"
-
+    "autoSave" : "Load from autosave?",
+    "controls": "Controls:<br /> <b>↑/↓/←/→</b>: Move Player<br /> <b>Space</b>: Reap / Sow on Current Tile<br /> <b>R/T</b>: Undo / Redo<br /> <b>1/2/3</b>: Save Game Into Slot 1/2/3<br /><b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />"
 }

@@ -37,6 +37,7 @@ interface LanguageData {
   inventory: string;
   dateCode: string;
   autoSave: string;
+  controls: string;
 }
 
 interface Position {
@@ -490,6 +491,8 @@ export class Game {
       month: "long",
       day: "numeric",
     });
+    const controls = document.getElementById("controls") as HTMLElement;
+    controls.innerHTML = this.language.controls;
   }
 
   //momento pattern
