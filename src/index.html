@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/type2_level3.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1 id="goal"></h1>
+      <h2 id="time"></h2>
+      <div id="inventory">
+        <div id="inventory"></div>
+      </div>
+      <div id="gameContainer"></div>
+      <div id="controls">
+        Controls:<br />
+        <b>↑/↓/←/→</b>: Move Player<br />
+        <b>Space</b>: Reap / Sow on Current Tile<br />
+        <b>R/T</b>: Undo / Redo<br />
+        <b>1/2/3</b>: Save Game Into Slot 1/2/3<br />
+        <b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />
+      </div>
+      <div id="language buttons">
+        <button id="en">English</button>
+        <button id="cn">Chinese - 简体中文</button>
+        <button id="ar">Arabic - العربية</button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+  <link rel="stylesheet" href="/src/style.css" />
+</html>
