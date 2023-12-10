@@ -1,6 +1,5 @@
 import * as foo from "./test.ts";
 
-
 //local storage
 let currentLevel = localStorage.getItem("currentlevel");
 if (currentLevel == null) {
@@ -75,27 +74,35 @@ let touchEndX = 0;
 let touchEndY = 0;
 
 // Add touch event listeners
-document.querySelector("#gameContainer")!.addEventListener('touchstart', function (event) {
-  console.log("touchstart")
-  const touch = (event as TouchEvent).touches[0];
-  touchStartX = touch.screenX;
-  touchStartY = touch.screenY;
-}, false);
+document.querySelector("#gameContainer")!.addEventListener(
+  "touchstart",
+  function (event) {
+    console.log("touchstart");
+    const touch = (event as TouchEvent).touches[0];
+    touchStartX = touch.screenX;
+    touchStartY = touch.screenY;
+  },
+  false
+);
 
-document.querySelector("#gameContainer")!.addEventListener('touchend', function (event) {
-  console.log("touchend")
-  const touch = (event as TouchEvent).changedTouches[0];
-  touchEndX = touch.screenX;
-  touchEndY = touch.screenY;
-  handleSwipe();
-}, false);
+document.querySelector("#gameContainer")!.addEventListener(
+  "touchend",
+  function (event) {
+    console.log("touchend");
+    const touch = (event as TouchEvent).changedTouches[0];
+    touchEndX = touch.screenX;
+    touchEndY = touch.screenY;
+    handleSwipe();
+  },
+  false
+);
 // Function to determine and handle swipe direction
 function handleSwipe() {
   const deltaX = touchEndX - touchStartX;
   const deltaY = touchEndY - touchStartY;
   if (Math.abs(deltaX) > Math.abs(deltaY)) {
     // Horizontal swipe
-    console.log("swiped right")
+    console.log("swiped right");
     if (deltaX > 0) {
       // Swiped right
       if (game.playerPosition.x !== game.rows - 1) {
@@ -118,7 +125,7 @@ function handleSwipe() {
   } else {
     // Vertical swipe
     if (deltaY > 0) {
-      console.log("swiped down")
+      console.log("swiped down");
       // Swiped down
       if (game.playerPosition.y !== game.cols - 1) {
         game.movePlayer(0, 1);
@@ -126,7 +133,7 @@ function handleSwipe() {
         return;
       }
     } else {
-      console.log("swiped up")
+      console.log("swiped up");
       // Swiped up
       if (game.playerPosition.y !== 0) {
         game.movePlayer(0, -1);
@@ -146,7 +153,7 @@ document.querySelector("#playerAction")!.addEventListener("click", () => {
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
   game.playTurn();
-})
+});
 
 document.querySelector("#undobtn")!.addEventListener("click", () => {
   console.log("undo");
@@ -154,48 +161,53 @@ document.querySelector("#undobtn")!.addEventListener("click", () => {
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
   game.playTurn();
-})
+});
 
 document.querySelector("#redobtn")!.addEventListener("click", () => {
   game.restoreGameState();
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
   game.playTurn();
-})
+});
 
-document.querySelector("#savebtn1")!.addEventListener("click", () => {
+document.querySelector("#loadbtn1")!.addEventListener("click", () => {
   const getSave = localStorage.getItem("save1");
   if (getSave) game.fromMomento(getSave, game.language.slot1);
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
-})
+  game.playTurn();
+});
 
-document.querySelector("#savebtn2")!.addEventListener("click", () => {
+document.querySelector("#loadbtn2")!.addEventListener("click", () => {
   const getSave = localStorage.getItem("save2");
   if (getSave) game.fromMomento(getSave, game.language.slot2);
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
-})
+  game.playTurn();
+});
 
-document.querySelector("#savebtn3")!.addEventListener("click", () => {
+document.querySelector("#loadbtn3")!.addEventListener("click", () => {
   const getSave = localStorage.getItem("save3");
   if (getSave) game.fromMomento(getSave, game.language.slot3);
   localStorage.setItem("autosave", game.toMomento());
   localStorage.setItem("language", JSON.stringify(game.language));
-})
-
-document.getElementById('dropdownButton')!.addEventListener('click', function() {
-  document.getElementById('dropdownMenu')!.classList.toggle('show');
+  game.playTurn();
 });
 
+document
+  .getElementById("dropdownButton")!
+  .addEventListener("click", function () {
+    document.getElementById("dropdownMenu")!.classList.toggle("show");
+  });
+
 // Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!(event.target as Element)?.matches('#dropdownButton')) {
-    var dropdowns = document.getElementsByClassName('dropdown-content');
+window.onclick = function (event) {
+  if (!(event.target as Element)?.matches("#dropdownButton")) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
     for (var i = 0; i < dropdowns.length; i++) {
       var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
       }
     }
   }
