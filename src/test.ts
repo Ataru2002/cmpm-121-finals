@@ -38,6 +38,9 @@ interface LanguageData {
   controls: string;
   nextLevel: string;
   end: string;
+  info: string;
+  saveButtons: string;
+  playerButtons: string;
 }
 
 interface Position {
@@ -177,11 +180,13 @@ export function InitGame(level: number): Game {
     const savedLang = localStorage.getItem("language")!;
     const autoLanguage = JSON.parse(savedLang) as LanguageData;
 
-    console.log(autoLanguage.save);
-    const loadAuto = window.confirm(autoLanguage.autoSave);
-    if (loadAuto) {
-      console.log("loading from auto");
-      game.fromMomento(autosave);
+    // console.log(autoLanguage.save);
+    if (savedLang) {
+      const loadAuto = window.confirm(autoLanguage.autoSave);
+      if (loadAuto) {
+        console.log("loading from auto");
+        game.fromMomento(autosave);
+      }
     }
   }
   const enButton = document.getElementById("en");
@@ -451,6 +456,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
+      console.log({ current });
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
@@ -471,6 +477,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
+      console.log({ current });
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
@@ -594,6 +601,16 @@ export class Game {
     });
     const controls = document.getElementById("controls") as HTMLElement;
     controls.innerHTML = this.language.controls;
+    const info = document.getElementById("dropdownButton") as HTMLElement;
+    info.innerText = this.language.info;
+    const saveLoadButtons = document.getElementById(
+      "savebuttons"
+    ) as HTMLElement;
+    saveLoadButtons.innerHTML = this.language.saveButtons;
+    const playerButtons = document.getElementById(
+      "playerActionDiv"
+    ) as HTMLElement;
+    playerButtons.innerHTML = this.language.playerButtons;
   }
 
   //momento pattern
