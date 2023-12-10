@@ -3,7 +3,7 @@ import { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.example.app",
   appName: "cmpm-121-final",
-  webDir: "src",
+  webDir: "dist",
   server: {
     androidScheme: "https",
   },
