@@ -8,10 +8,12 @@
     "inventory" : "存货",
     "dateCode" : "zh-Hans-CN",
     "autoSave" : "从自动保存加载？",
-    "controls" : "控制：<br /> <b>↑/↓/←/→</b>: 移动玩家<br /> <b>空格</b>: 在当前方块上收割 / 播种<br /> <b>R/T</b>: 撤销 / 重做<br /> <b>1/2/3</b>: 将游戏保存到槽位 1/2/3<br /><b>Shift + 1/2/3</b>: 从槽位 1/2/3 加载游戏<br />",
+    "controls" : "控制：<br /> <b>↑/↓/←/→/滑动</b>: 移动玩家<br /> <b>空格</b>: 在当前方块上收割 / 播种<br /> <b>R/T</b>: 撤销 / 重做<br /> <b>1/2/3</b>: 将游戏保存到槽位 1/2/3<br /><b>Shift + 1/2/3</b>: 从槽位 1/2/3 加载游戏<br />",
     "nextLevel" : "你想要进入下一关吗？",
     "end" : "你完成了最后一关并赢得了游戏。",
-    "info" : "控制 + 保存状态" 
+    "info" : "控制 + 保存状态",
+    "saveButtons": "<br /><button id=\"savebtn1\">保存 1</button><button id=\"savebtn2\">保存 2</button><button id=\"savebtn3\">保存 3</button><br /><button id=\"loadbtn1\">加载 1</button><button id=\"loadbtn2\">加载 2</button><button id=\"loadbtn3\">加载 3</button>"
+
 
 }
 

@@ -8,8 +8,10 @@
     "inventory" : "Inventory:",
     "dateCode" : "en-US",
     "autoSave" : "Load from autosave?",
-    "controls": "Controls:<br /> <b>↑/↓/←/→</b>: Move Player<br /> <b>Space</b>: Reap / Sow on Current Tile<br /> <b>R/T</b>: Undo / Redo<br /> <b>1/2/3</b>: Save Game Into Slot 1/2/3<br /><b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />",
+    "controls": "Controls:<br /> <b>↑/↓/←/→/Swipe</b>: Move Player<br /> <b>Space</b>: Reap / Sow on Current Tile<br /> <b>R/T</b>: Undo / Redo<br /> <b>1/2/3</b>: Save Game Into Slot 1/2/3<br /><b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />",
     "nextLevel" : "Do you want to go to the next level?",
     "end" : "You finished the last level and beat the game.",
-    "info" : "Controls + Save States"
+    "info" : "Controls + Save States",
+    "saveButtons": "<br /><button id=\"savebtn1\">save 1</button><button id=\"savebtn2\">save 2</button><button id=\"savebtn3\">save 3</button><br /><button id=\"loadbtn1\">load 1</button><button id=\"loadbtn2\">load 2</button><button id=\"loadbtn3\">load 3</button>"
+
 }
