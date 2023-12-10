@@ -177,11 +177,13 @@ export function InitGame(level: number): Game {
     const savedLang = localStorage.getItem("language")!;
     const autoLanguage = JSON.parse(savedLang) as LanguageData;
 
-    console.log(autoLanguage.save);
-    const loadAuto = window.confirm(autoLanguage.autoSave);
-    if (loadAuto) {
-      console.log("loading from auto");
-      game.fromMomento(autosave);
+    // console.log(autoLanguage.save);
+    if (savedLang) {
+      const loadAuto = window.confirm(autoLanguage.autoSave);
+      if (loadAuto) {
+        console.log("loading from auto");
+        game.fromMomento(autosave);
+      }
     }
   }
   const enButton = document.getElementById("en");
@@ -451,6 +453,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
+      console.log({current})
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
@@ -471,6 +474,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
+      console.log({current})
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
