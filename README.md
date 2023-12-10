@@ -127,9 +127,67 @@ Our plan and tool has not changed after F1. Also, we started thinking more about
 
 ### F0+F1+F2
 
-no changes here
+The devlog should briefly comment on how the previous requirements remain satisfied in the latest version of your software. If no major changes were made, you can just simply state that no major changes were made. However, if you evolved your design to improve code quality (a good idea!) this section of your devlog entry would be a good place to brag about it.
 
-### F3
+### Internationalization
+
+What we changed to prepare for internationalization was go from using "strings" to now using a system that pulls from a list of pre translated phrases. To add a new phrase what needs to be updated is the languageData interface that defines what phrases should be in the data that is parsed in.
+
+~~~ts
+interface LanguageData {
+  load: string;
+  win: string;
+  save: string;
+  slot1: string;
+  slot2: string;
+  slot3: string;
+  inventory: string;
+  dateCode: string;
+  autoSave: string;
+  controls: string;
+  nextLevel: string;
+  end: string;
+  info: string;
+  saveButtons: string;
+  playerButtons: string;
+}
+~~~
+
+each language that we add has its own JSON file that holds the data of the translated version of the text that we originally had in english
+
+~~~JSON
+{
+    "load": "loaded from ",
+    "win" :  "You win!",
+    "save" : "saved to ",
+    "slot1" : "slot 1",
+    "slot2" : "slot 2",
+    "slot3" : "slot 3",
+    "inventory" : "Inventory:",
+    "dateCode" : "en-US",
+    "autoSave" : "Load from autosave?",
+    "controls": "Controls:<br /> <b>↑/↓/←/→/Swipe</b>: Move Player<br /> <b>Space</b>: Reap / Sow on Current Tile<br /> <b>R/T</b>: Undo / Redo<br /> <b>1/2/3</b>: Save Game Into Slot 1/2/3<br /><b>Shift + 1/2/3</b>: Load Game From Slot 1/2/3<br />",
+    "nextLevel" : "Do you want to go to the next level?",
+    "end" : "You finished the last level and beat the game.",
+    "info" : "Controls + Save States",
+    "saveButtons": "<br /><button id=\"savebtn1\">save 1</button><button id=\"savebtn2\">save 2</button><button id=\"savebtn3\">save 3</button><br /><button id=\"loadbtn1\">load 1</button><button id=\"loadbtn2\">load 2</button><button id=\"loadbtn3\">load 3</button>",
+    "playerButtons": "<button id=\"playerAction\">Reap/Sow</button><button id=\"undobtn\">undo</button><button id=\"redobtn\">redo</button>"
+
+
+}
+~~~
+
+To add a new language you would add a new file languageName.JSON and fill out the required phrases. then At the top of test.ts you would add one line to parse it in.
+
+~~~ts
+const englishData = JSON.parse(JSON.stringify(english)) as LanguageData;
+const chineseData = JSON.parse(JSON.stringify(chinese)) as LanguageData;
+const arabicData = JSON.parse(JSON.stringify(arabic)) as LanguageData;
+~~~
+
+an HTML button will be made for that langugage and an event listener to go along to change the language. The languageData is then held in the Game class that holds all the info for the game and it will place the phrases where they belong.
+
+### Localization
 
 ## Languages
 
@@ -145,4 +203,25 @@ Google Translate is giving us the most faithful translation that conveys our gam
 - Right-to-left script language - Arabic
 
   When picking a language for this requirement we were mainly looking at Hebrew or Arabic. Both of these langauges provided similar challenges and we just ended up
-going with arabic for no particular reason.
+going with arabic for no particular reason. Since none of us speak this language this was a chatGPT moment  where I would paste the phrase in english and then tell it to translate into arabic. That worked pretty well and I was able to paste my whole english JSON file and have it translate the whole thing and spit out an identical JSON file only now translated to arabic.
+
+The version of the game that we shipped has all three languages that are listed above with the player changing the current language with a button. The language buttons are always shown on the screen so the player can change the language at will.
+
+### Mobile Installation
+
+To get our game playable on a mobile device we followed the Capacitor link that was given to us on the F3 Software requirements page. No changes were needed in terms of our code but there was a change that needed to be made to our build script to ensure that all our files bundled correctly for the app. We chose to only create an android app because the platform allows you to sideload apps from .apk files unlike on an apple device.
+
+Links used
+
+- [Getting Started With Capcitor](<https://capacitorjs.com/docs/getting-started>)
+- [Capacitor Android Documentation](<https://capacitorjs.com/docs/android>)
+- [Troubleshooting Android Issues in Capacitor](<https://capacitorjs.com/docs/android/troubleshooting>)
+
+
+### Mobile Play (Offline)
+
+No changes in our design were required to play our game offline. Our never needed an internet connection besides the fact that it was played in a browser, but now that its packaged in an app using capacitor the game works perfectly offline.
+
+## Reflection
+
+Looking back on how you achieved the new F3 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
