@@ -40,6 +40,7 @@ interface LanguageData {
   end: string;
   info: string;
   saveButtons: string;
+  playerButtons: string;
 }
 
 interface Position {
@@ -606,6 +607,10 @@ export class Game {
       "savebuttons"
     ) as HTMLElement;
     saveLoadButtons.innerHTML = this.language.saveButtons;
+    const playerButtons = document.getElementById(
+      "playerActionDiv"
+    ) as HTMLElement;
+    playerButtons.innerHTML = this.language.playerButtons;
   }
 
   //momento pattern

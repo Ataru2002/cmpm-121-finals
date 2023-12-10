@@ -12,7 +12,9 @@
     "nextLevel" : "هل ترغب في الانتقال إلى المستوى التالي؟",
     "end" : "لقد أنهيت المستوى الأخير وفازت باللعبة.",
     "info" :" التحكم + حالات الحفظ",
-    "saveButtons": "<br /><button id=\"savebtn1\">حفظ 1</button><button id=\"savebtn2\">حفظ 2</button><button id=\"savebtn3\">حفظ 3</button><br /><button id=\"loadbtn1\">تحميل 1</button><button id=\"loadbtn2\">تحميل 2</button><button id=\"loadbtn3\">تحميل 3</button>"
+    "saveButtons": "<br /><button id=\"savebtn1\">حفظ 1</button><button id=\"savebtn2\">حفظ 2</button><button id=\"savebtn3\">حفظ 3</button><br /><button id=\"loadbtn1\">تحميل 1</button><button id=\"loadbtn2\">تحميل 2</button><button id=\"loadbtn3\">تحميل 3</button>",
+    "playerButtons": "<button id=\"playerAction\">حصاد/زرع</button><button id=\"undobtn\">تراجع</button><button id=\"redobtn\">إعادة</button>"
+
 
 
 }

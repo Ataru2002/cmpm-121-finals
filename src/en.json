@@ -12,6 +12,8 @@
     "nextLevel" : "Do you want to go to the next level?",
     "end" : "You finished the last level and beat the game.",
     "info" : "Controls + Save States",
-    "saveButtons": "<br /><button id=\"savebtn1\">save 1</button><button id=\"savebtn2\">save 2</button><button id=\"savebtn3\">save 3</button><br /><button id=\"loadbtn1\">load 1</button><button id=\"loadbtn2\">load 2</button><button id=\"loadbtn3\">load 3</button>"
+    "saveButtons": "<br /><button id=\"savebtn1\">save 1</button><button id=\"savebtn2\">save 2</button><button id=\"savebtn3\">save 3</button><br /><button id=\"loadbtn1\">load 1</button><button id=\"loadbtn2\">load 2</button><button id=\"loadbtn3\">load 3</button>",
+    "playerButtons": "<button id=\"playerAction\">Reap/Sow</button><button id=\"undobtn\">undo</button><button id=\"redobtn\">redo</button>"
+
 
 }
