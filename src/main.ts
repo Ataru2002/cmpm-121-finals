@@ -193,6 +193,26 @@ document.querySelector("#loadbtn3")!.addEventListener("click", () => {
   localStorage.setItem("language", JSON.stringify(game.language));
   game.playTurn();
 });
+document.querySelector("#savebtn1")!.addEventListener("click", () => {
+  localStorage.setItem("save1", game.toMomento(game.language.slot1));
+  localStorage.setItem("autosave", game.toMomento());
+  localStorage.setItem("language", JSON.stringify(game.language));
+  game.playTurn();
+});
+
+document.querySelector("#savebtn2")!.addEventListener("click", () => {
+  localStorage.setItem("save1", game.toMomento(game.language.slot2));
+  localStorage.setItem("autosave", game.toMomento());
+  localStorage.setItem("language", JSON.stringify(game.language));
+  game.playTurn();
+});
+
+document.querySelector("#savebtn3")!.addEventListener("click", () => {
+  localStorage.setItem("save1", game.toMomento(game.language.slot3));
+  localStorage.setItem("autosave", game.toMomento());
+  localStorage.setItem("language", JSON.stringify(game.language));
+  game.playTurn();
+});
 
 document
   .getElementById("dropdownButton")!
