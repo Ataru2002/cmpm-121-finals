@@ -58,7 +58,7 @@ After switching to just TypeScript (with no Phaser library), not much has change
 
 ### F0+F1
 
-- No major changes were made.
+- Most of the code from F0+F1 was left untouched. At first, we were passing 3x3 to our constructor and the goal was 10 plants by default in the previous step However, with the addition of External/Internal DSL we changed what was being passed to the constructor and rendering. This change essentially changed no code funcitonality but the result was that we can now add/remove game levels and rules by editting these DSL's.
 
 ### External DSL for Scenario Design
 
@@ -119,7 +119,7 @@ this.plants = allPlantDefinitions.map(InternalPlantTypeCompiler);
 - This was written in TypeScript. In the code snippets above, we basically implemented a subclass sandbox pattern. In a more natural language explanation, each variant or type of an object is represented by a separate subclass. The key idea is to encapsulate the behavior of each type within its own class, creating a sandbox-like environment for managing the variations. We had PlantDefinitionLanguage interface to let different plant types share the same function names but how they are implemented is different based on their types.
 
 ## Reflection
-Our plan and tool has not changed after F1. Also, we started thinking more about polishing our game to be more enjoyable for the player. Our game was on point with the requirements but did not account to the essence of the game being fun for the player. We updated the visual representation of water and the tiles to be understood easier. In the previous versions, we found the increasing images of water as water level increases is extremely annoying so we came up with the idea to just have an image and a number represent the levels instead. In total, a bunch of quality of life and aesthetic changes. However, we did update a little bit of code to match our code now that our game has multiple levels due to interal DSL. Saving mechanic was having issues so we had to clear the game save everytime we move on to the next level. Autosave will feature will only work on the level you're currently on.
+Our plan has changed slightly now that we have multiple levels because the saving functionality broke. So, our solution was to clear the game save everytime we move on to the next level. Autosave will feature will only work on the level you're currently on. Also, we started thinking more about polishing our game to be more enjoyable for the player. Our game was on point with the requirements but did not account to the essence of the game being fun for the player. We updated the visual representation of water and the tiles to be understood easier. In the previous versions, we found the increasing images of water as water level increases is extremely annoying so we came up with the idea to just have an image and a number represent the levels instead. In total, a bunch of quality of life and aesthetic changes.
 
 # Devlog Entry - 12/9/23
 
