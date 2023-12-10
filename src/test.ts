@@ -38,6 +38,7 @@ interface LanguageData {
   controls: string;
   nextLevel: string;
   end: string;
+  info: string;
 }
 
 interface Position {
@@ -453,7 +454,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
-      console.log({current})
+      console.log({ current });
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
@@ -474,7 +475,7 @@ export class Game {
         time: this.time,
         inventory: this.inventory,
       });
-      console.log({current})
+      console.log({ current });
       this.garden = last!.garden;
       this.playerPos = last!.playerPos;
       this.time = last!.time;
@@ -598,6 +599,8 @@ export class Game {
     });
     const controls = document.getElementById("controls") as HTMLElement;
     controls.innerHTML = this.language.controls;
+    const info = document.getElementById("dropdownButton") as HTMLElement;
+    info.innerText = this.language.info;
   }
 
   //momento pattern
