@@ -58,7 +58,7 @@ After switching to just TypeScript (with no Phaser library), not much has change
 
 ### F0+F1
 
-- Most of the code from F0+F1 was left untouched. At first, we were passing 3x3 to our constructor and the goal was 10 plants by default in the previous step However, with the addition of External/Internal DSL we changed what was being passed to the constructor and rendering. This change essentially changed no code funcitonality but the result was that we can now add/remove game levels and rules by editting these DSL's.
+- Most of the code from F0+F1 was left untouched. At first, we were passing 3x3 to our constructor and the goal was 10 plants by default in the previous step. However, with the addition of External/Internal DSL we changed what was being passed to the constructor and rendering. This change essentially changed no code funcitonality but the result was that we can now add/remove game levels and rules by editting these DSL's.
 
 ### External DSL for Scenario Design
 
@@ -127,7 +127,7 @@ Our plan has changed slightly now that we have multiple levels because the savin
 
 ### F0+F1+F2
 
-The devlog should briefly comment on how the previous requirements remain satisfied in the latest version of your software. If no major changes were made, you can just simply state that no major changes were made. However, if you evolved your design to improve code quality (a good idea!) this section of your devlog entry would be a good place to brag about it.
+- The code from our F0+F1+F2 sections have remained unchanged. Even after when we add internalization and localization to our program, which added 2 additional languages: chinese, arabic. These changes doesn't affect what has already worked for F0+F1+F2 requirements as the code changes are all new additions.
 
 ### Internationalization
 
@@ -224,4 +224,4 @@ No changes in our design were required to play our game offline. Our never neede
 
 ## Reflection
 
-Looking back on how you achieved the new F3 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
+- When adding the game to mobile, we had to do a lot of reconsiderations for our current controls since our current controls doesn't work well when it comes to mobile devices like phones and tablet. As a result, started out as a purely keyboard-based game, we have made the decision to add touch controls to the game and also manual buttons. Ultimately, our game evolved in a way that allow players to have multiple ways playing the game that fits their style. For example, 1 player could be using the keyboard while using the sow/reap button, one player could be using the keyboard while pressing the spacebar (button to sow/reap), or one player could even hook up a bluetooth keyboard to their mobile device and using the spacebar and swipe motions for movement
