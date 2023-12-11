@@ -211,7 +211,7 @@ The version of the game that we shipped has all three languages that are listed 
 
 To get our game playable on a mobile device we followed the Capacitor link that was given to us on the F3 Software requirements page. No changes were needed in terms of our code but there was a change that needed to be made to our build script to ensure that all our files bundled correctly for the app. We chose to only create an android app because the platform allows you to sideload apps from .apk files unlike on an apple device.
 
-Links used
+Links us
 
 - [Getting Started With Capcitor](<https://capacitorjs.com/docs/getting-started>)
 - [Capacitor Android Documentation](<https://capacitorjs.com/docs/android>)
@@ -224,4 +224,4 @@ No changes in our design were required to play our game offline. Our never neede
 
 ## Reflection
 
-- When adding the game to mobile, we had to do a lot of reconsiderations for our current controls since our current controls doesn't work well when it comes to mobile devices like phones and tablet. As a result, started out as a purely keyboard-based game, we have made the decision to add touch controls to the game and also manual buttons. Ultimately, our game evolved in a way that allow players to have multiple ways playing the game that fits their style. For example, 1 player could be using the keyboard while using the sow/reap button, one player could be using the keyboard while pressing the spacebar (button to sow/reap), or one player could even hook up a bluetooth keyboard to their mobile device and using the spacebar and swipe motions for movement
+When adding the game to mobile, we had to do a lot of reconsiderations for our current controls since our current controls doesn't work well when it comes to mobile devices like phones and tablet. As a result, started out as a purely keyboard-based game, we have made the decision to add touch controls to the game and also manual buttons. Ultimately, our game evolved in a way that allow players to have multiple ways playing the game that fits their style. For example, 1 player could be using the keyboard while using the sow/reap button, one player could be using the keyboard while pressing the spacebar (button to sow/reap), or one player could even hook up a bluetooth keyboard to their mobile device and using the spacebar and swipe motions for movement
