@@ -209,7 +209,7 @@ The version of the game that we shipped has all three languages that are listed 
 
 ### Mobile Installation
 
-To get our game playable on a mobile device we followed the Capacitor link that was given to us on the F3 Software requirements page. No changes were needed in terms of our code but there was a change that needed to be made to our build script to ensure that all our files bundled correctly for the app. We chose to only create an android app because the platform allows you to sideload apps from .apk files unlike on an apple device.
+To get our game playable on a mobile device we followed the Capacitor link that was given to us on the F3 Software requirements page. There was a change that needed to be made to our build script to ensure that all our files bundled correctly for the app. Also we had to trade some traditional keyboard controls for on screen buttons to adapt the control scheme for mobile, swipe controls were added as well. We chose to only create an android app because the platform allows you to sideload apps from .apk files unlike on an apple device.
 
 Links us
 
