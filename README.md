@@ -80,19 +80,36 @@ For our external DSL, we decided to use the pre-existing DSL called JSON. We cho
 ### Internal DSL for Scenario Design
 
 ~~~TS
-function InternalPlantTypeCompiler (program: ($: PlantDefinitionLanguage) => void): 
-InternalPlantType{
+class InternalPlantType {
+  type: PlantType = PlantType.None;
+  assets: string[] = [];
+  sun: number = -1;
+  water: number = -1;
+  level: number = -1;
+}
+~~~
+
+~~~TS
+function InternalPlantTypeCompiler(
+  program: ($: PlantDefinitionLanguage) => void
+): InternalPlantType {
   const internalPlantType = new InternalPlantType();
   const dsl: PlantDefinitionLanguage = {
     type(type: PlantType): void {
-      internalPlantType.type = type
+      internalPlantType.type = type;
     },
     assets(assets: string[]): void {
       internalPlantType.assets = assets;
     },
     sun(sun: number): void {
       internalPlantType.sun = sun;
-    }
+    },
+    water(water: number): void {
+      internalPlantType.water = water;
+    },
+    level(level: number): void {
+      internalPlantType.level = level;
+    },
   };
   program(dsl);
   return internalPlantType;
@@ -110,6 +127,21 @@ const allPlantDefinitions = [
           "assets/type1_level3.png",
         ]);
         $.sun(1);
+        $.water(1);
+        $.level(PlantLevel.Type3);
+      },
+      function tomato($: PlantDefinitionLanguage) {
+        $.type(PlantType.Type2);
+        $.assets([
+          "assets/type2_level1.png",
+          "assets/type2_level2.png",
+          "assets/type2_level3.png",
+        ]);
+        $.sun(1);
+        $.water(2);
+        $.level(PlantLevel.Type3);
+      },
+    ];
 ~~~
 
 ~~~TS
